@@ -3,7 +3,7 @@ import path from 'path';
 import axios from 'axios';
 
 const GITHUB_API = 'https://api.github.com/repos/rioowho/velyapii/contents/apikey.json';
-const TOKEN = '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';
+const TOKEN = process.env.GH_APIKEY;
 
 let apiKeys = [];
 
