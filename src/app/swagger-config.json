@@ -16,7 +16,7 @@
     
     "/api/stalk/repostalk": {
       "get": {
-        "tags": ["Stalk"],
+        "tags": ["Stalker"],
         "description": "Ge",
         "parameters": [
           {
