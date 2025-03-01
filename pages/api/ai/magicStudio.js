@@ -1,4 +1,3 @@
-import { validateApiKey } from "../../../apikeyy.js";
 import { CREATOR } from "../../../settings.js";
 import axios from "axios";
 import FormData from "form-data";
@@ -13,7 +12,6 @@ export default async function handler(req, res) {
     }
 
     try {
-        await validateApiKey(req, res, async () => {
             const { prompt } = req.query;
 
             if (!prompt) {
@@ -51,7 +49,6 @@ export default async function handler(req, res) {
             error: "Internal Server Error",
         });
     }
-}
 
 function getTimestamp() {
     return (Date.now() / 1000).toFixed(3);
