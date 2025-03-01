@@ -1,5 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
+import FormData from "form-data";
 import { CREATOR } from "../../../settings";
 
 export default async function handler(req, res) {
