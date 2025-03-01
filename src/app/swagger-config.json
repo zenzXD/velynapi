@@ -304,11 +304,6 @@
   "get": {
     "tags": ["Tools"],
     "summary": "Menghapus latar belakang gambar menggunakan AI",
-    "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
   "parameters": [
           {
             "name": "url",
@@ -890,11 +885,6 @@
       "get": {
         "tags": ["Downloader"],
         "summary": "Mengunduh audio dari video YouTube dalam format MP3",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "url",
@@ -905,15 +895,6 @@
             "required": true,
             "description": "URL video YouTube yang akan diunduh sebagai MP3"
           },
-          {
-            "name": "apikey",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "API key yang diperlukan untuk akses"
-          }
         ],
         "responses": {
           "200": {
