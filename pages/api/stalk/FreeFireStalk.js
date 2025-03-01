@@ -11,10 +11,10 @@ export default async function handler(req, res) {
         });
     }
 
-    const { query } = req.query;
+    const { id } = req.id;
     
     try {
-        const data = await ffStalk(query);
+        const data = await ffStalk(id);
         res.status(200).json({
             status: true,
             creator: CREATOR,
