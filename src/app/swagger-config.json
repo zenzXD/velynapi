@@ -304,6 +304,11 @@
   "get": {
     "tags": ["Tools"],
     "summary": "Menghapus latar belakang gambar menggunakan AI",
+    "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
   "parameters": [
           {
             "name": "url",
@@ -314,6 +319,15 @@
             "required": true,
             "description": "URL gambar yang akan dihapus latar belakangnya"
           },
+          {
+            "name": "apikey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "API key yang diperlukan untuk akses"
+          }
         ],
         "responses": {
           "200": {
@@ -334,6 +348,12 @@
           },
           "400": {
             "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+          },
+          "401": {
+            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+          },
+          "403": {
+            "description": "Forbidden - API Key tidak memiliki akses"
           },
           "500": {
             "description": "Internal Server Error"
@@ -589,6 +609,11 @@
 "/api/ai/magicStudio": {
   "get": {
     "tags": ["Artificial Intelligence"],
+     "security": [
+     {
+     "ApiKeyAuth": []
+     }
+     ],
     "parameters": [
       {
         "name": "prompt",
@@ -599,6 +624,15 @@
         },
         "description": "Deskripsi gambar yang ingin dihasilkan oleh AI"
       },
+      {
+            "name": "apikey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "API key yang diperlukan untuk akses"
+          }
         ],
         "responses": {
           "200": {
@@ -619,6 +653,12 @@
           },
           "400": {
             "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+          },
+          "401": {
+            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+          },
+          "403": {
+            "description": "Forbidden - API Key tidak memiliki akses"
           },
           "500": {
             "description": "Internal Server Error"
@@ -850,6 +890,11 @@
       "get": {
         "tags": ["Downloader"],
         "summary": "Mengunduh audio dari video YouTube dalam format MP3",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "url",
@@ -860,6 +905,15 @@
             "required": true,
             "description": "URL video YouTube yang akan diunduh sebagai MP3"
           },
+          {
+            "name": "apikey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "API key yang diperlukan untuk akses"
+          }
         ],
         "responses": {
           "200": {
@@ -880,6 +934,12 @@
           },
           "400": {
             "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+          },
+          "401": {
+            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+          },
+          "403": {
+            "description": "Forbidden - API Key tidak memiliki akses"
           },
           "500": {
             "description": "Internal Server Error"
