@@ -16,7 +16,7 @@
     
     "/api/stalk/repostalk": {
       "get": {
-        "tags": ["Stalk"],
+        "tags": ["Stalker"],
         "description": "Ge",
         "parameters": [
           {
@@ -97,6 +97,84 @@
       }
     }
   },
+  "/api/stalk/FreeFireStalk": {
+  "get": {
+    "tags": ["Stalker"],
+    "parameters": [
+      {
+        "name": "id",
+        "in": "query",
+        "schema": { "type": "string" },
+        "required": true,
+        "description": "ID Free Fire pengguna"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" },
+                    "bio": { "type": "string" },
+                    "like": { "type": "integer" },
+                    "level": { "type": "integer" },
+                    "exp": { "type": "integer" },
+                    "region": { "type": "string" },
+                    "honorScore": { "type": "integer" },
+                    "brRank": { "type": "string" },
+                    "brRankPoint": { "type": "integer" },
+                    "csRankPoint": { "type": "integer" },
+                    "accountCreated": { "type": "string", "format": "date" },
+                    "lastLogin": { "type": "string", "format": "date-time" },
+                    "preferMode": { "type": "string" },
+                    "language": { "type": "string" },
+                    "booyahPassPremium": { "type": "boolean" },
+                    "booyahPassLevel": { "type": "integer" },
+                    "petInformation": {
+                      "type": "object",
+                      "properties": {
+                        "name": { "type": "string" },
+                        "level": { "type": "integer" },
+                        "exp": { "type": "integer" },
+                        "starMarked": { "type": "boolean" },
+                        "selected": { "type": "boolean" }
+                      }
+                    },
+                    "guild": { "type": "string" },
+                    "equippedItems": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": { "type": "string" },
+                          "img": { "type": "string", "format": "uri" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter ID tidak valid"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+}, 
     "/api/tools/Carbonfyv1": {
       "post": {
         "tags": ["Tools"],
