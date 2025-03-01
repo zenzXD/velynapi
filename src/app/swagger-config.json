@@ -586,6 +586,50 @@
         }
       }
     },
+    "/api/ai/doppleAI": {
+      "get": {
+        "tags": ["Artificial Intelligence"],
+        "parameters": [
+          {
+            "name": "prompt",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/ai/magicAI": {
+      "get": {
+        "tags": ["Artificial Intelligence"],
+        "parameters": [
+          {
+            "name": "prompt",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
 "/api/ai/magicStudio": {
   "get": {
     "tags": ["Artificial Intelligence"],
