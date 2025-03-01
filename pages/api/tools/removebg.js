@@ -1,4 +1,3 @@
-import { validateApiKey } from "../../../apikeyy.js";
 import { CREATOR } from "../../../settings.js";
 import axios from "axios";
 
@@ -46,14 +45,8 @@ export default async function handler(req, res) {
                 });
             }
         });
-    } catch (error) {
-        console.error("API Key validation error:", error);
-        res.status(500).json({
-            status: false,
-            creator: CREATOR,
-            error: "Internal Server Error",
-        });
-    }
+  } 
+
 
 async function removebg(url) {
     try {
