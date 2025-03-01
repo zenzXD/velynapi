@@ -2,13 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
 
-const GITHUB_API = 'https://api.github.com/repos/rioowho/velyapii/contents/apikey.json';
+const GITHUB_API = 'https://api.github.com/repos/NyxObscura/velyn/contents/velyn.json?ref=main';
 const TOKEN = process.env.GH_APIKEY;
 
 let apiKeys = [];
 
 try {
-     const apiKeyData = fs.readFileSync(path.join(process.cwd(), "apikey.json"), "utf8");
+     const apiKeyData = fs.readFileSync(path.join(process.cwd(), "velyn.json"), "utf8");
     const parsedData = JSON.parse(apiKeyData);
     apiKeys = parsedData.api_keys && Array.isArray(parsedData.api_keys) ? parsedData.api_keys : [];
 
