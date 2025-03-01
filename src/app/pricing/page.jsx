@@ -1,5 +1,5 @@
-import Image from "next/image";
 import styles from "./pricing.module.css";
+import { FaCheckCircle } from "react-icons/fa";
 
 export const metadata = {
   title: "Pricing Page",
@@ -15,51 +15,56 @@ const PricingPage = () => {
           Dapatkan akses ke API Velyn dengan performa terbaik dan tanpa batasan. 
           Pilih paket yang sesuai dengan kebutuhan Anda dan nikmati layanan API berkualitas tinggi.
         </p>
-
-        <div className={styles.pricingBoxes}>
-          <div className={styles.pricingBox}>
-            <h3 className={styles.planTitle}>Gratis</h3>
-            <p className={styles.price}>Rp 0 / bulan</p>
-            <ul className={styles.features}>
-              <li>✔ 10,000 permintaan per bulan</li>
-              <li>✔ Akses ke endpoint dasar</li>
-              <li>✖ Dukungan prioritas</li>
-            </ul>
-            <button className={styles.button}>Mulai Sekarang</button>
-          </div>
-
-          <div className={`${styles.pricingBox} ${styles.popular}`}>
-            <h3 className={styles.planTitle}>Pro</h3>
-            <p className={styles.price}>Rp 99.000 / bulan</p>
-            <ul className={styles.features}>
-              <li>✔ 100,000 permintaan per bulan</li>
-              <li>✔ Akses ke semua endpoint</li>
-              <li>✔ Dukungan prioritas 24/7</li>
-            </ul>
-            <button className={styles.button}>Langganan</button>
-          </div>
-
-          <div className={styles.pricingBox}>
-            <h3 className={styles.planTitle}>Enterprise</h3>
-            <p className={styles.price}>Hubungi Kami</p>
-            <ul className={styles.features}>
-              <li>✔ Permintaan tanpa batas</li>
-              <li>✔ Akses premium ke fitur eksklusif</li>
-              <li>✔ Dukungan khusus</li>
-            </ul>
-            <button className={styles.button}>Hubungi Kami</button>
-          </div>
-        </div>
       </div>
 
-      <div className={styles.imgContainer}>
-        <Image
-          src="/pricing.png"
-          alt="Pricing Image"
-          width={500}
-          height={500}
-          className={styles.img}
-        />
+      <div className={styles.pricingBoxes}>
+        {[ 
+          {
+            title: "Free Plan",
+            price: "Rp 0 / 5 day",
+            features: [
+              "3,000 / Limit",
+              "Akses ke semua endpoint"
+          ],
+            button: "Mulai Sekarang"
+          },
+          {
+            title: "Pro Plan",
+            price: "Rp 15,000 / 15 day",
+            features: [
+              "10,000 / Limit",
+              "Akses ke semua endpoint",
+              "Dukungan prioritas 24/7",
+              "Standard plan User"
+            ],
+            button: "Langganan",
+            highlight: true
+          },
+          {
+            title: "Premium Plan",
+            price: "Rp 25,000 / 30 day",
+            features: [
+              "20,000 / Limit",
+              "Akses ke endpoint dasar",
+              "Dukungan prioritas 24/8",
+              "Premium User",
+              "fast respon Endpoint"
+            ],
+            button: "Langganan",
+            highlight: true
+          },
+        ].map((plan, index) => (
+          <div key={index} className={`${styles.pricingBox} ${plan.highlight ? styles.popular : ""}`}>
+            <h3 className={styles.planTitle}>{plan.title}</h3>
+            <p className={styles.price}>{plan.price}</p>
+            <ul className={styles.features}>
+              {plan.features.map((feature, i) => (
+                <li key={i}><FaCheckCircle className={styles.icon} /> {feature}</li>
+              ))}
+            </ul>
+            <button className={styles.button}>{plan.button}</button>
+          </div>
+        ))}
       </div>
     </div>
   );
