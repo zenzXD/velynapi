@@ -1,63 +1,67 @@
+/* Styling CSS */
 .container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 40px;
+  justify-content: center;
+  gap: 30px;
   padding: 50px;
-  background-color: var(--bg-light);
-  border-radius: var(--border-radius);
+  border-radius: 12px;
 }
 
 .textContainer {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  text-align: center;
+  max-width: 800px;
 }
 
 .subtitle {
-  font-size: 28px;
-  color: var(--primary);
+  font-size: 32px;
   font-weight: bold;
+  color: #b506f5;
 }
 
 .desc {
   font-size: 18px;
-  color: var(--text-dark);
-  line-height: 1.5;
+  color: #ffffff;
+  line-height: 1.6;
 }
 
 .pricingBoxes {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 20px;
-  margin-top: 20px;
+  justify-content: center;
 }
 
 .pricingBox {
-  background-color: #fff;
+  background: #3c0e7b;
   padding: 30px;
-  border-radius: var(--border-radius);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   text-align: center;
   flex: 1;
-  transition: transform 0.3s ease;
+  min-width: 280px;
+  max-width: 350px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .pricingBox:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 .planTitle {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 10px;
+  border-bottom: 2px solid #ffffff;
+  padding-bottom: 5px;
 }
 
 .price {
   font-size: 20px;
-  color: var(--primary);
   font-weight: bold;
+  color: #007bff;
   margin-bottom: 15px;
 }
 
@@ -70,87 +74,58 @@
 
 .features li {
   font-size: 16px;
-  margin-bottom: 8px;
   display: flex;
   align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #ffffff;
 }
 
-.features li::before {
-  content: "✔";
-  color: var(--primary);
-  font-weight: bold;
-  margin-right: 8px;
+.icon {
+  color: #007bff;
 }
 
 .button {
-  background-color: var(--primary);
-  color: var(--text-light);
+  background: #0038de;
+  color: #fff;
   padding: 12px 20px;
   font-size: 16px;
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
 .button:hover {
-  background-color: #0056b3;
+  background: #3c0e7b;
 }
 
 .popular {
-  background-color: var(--primary);
-  color: var(--text-light);
+  background: #3c0e7b;
+  color: #ffffff;
 }
 
-.popular .price {
-  color: var(--text-light);
+.popular .planTitle {
+  border-bottom: 2px solid #ffffff;
 }
 
-.popular .features li::before {
-  color: var(--text-light);
+.popular .price,
+.popular .icon {
+  color: #007bff;
 }
 
 .popular .button {
-  background-color: #fff;
-  color: var(--primary);
+  background: #0038de;
+  color: #fff;
 }
 
 .popular .button:hover {
-  background-color: #e0e0e0;
-}
-
-.imgContainer {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Responsiveness */
-@media (max-width: 1024px) {
-  .container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .pricingBoxes {
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-  }
-
-  .pricingBox {
-    width: 80%;
-  }
+  background: #3c0e7b;
 }
 
 @media (max-width: 768px) {
-  .pricingBox {
-    width: 100%;
+  .pricingBoxes {
+    flex-direction: column;
+    align-items: center;
   }
 }
