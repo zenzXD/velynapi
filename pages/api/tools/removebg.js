@@ -10,7 +10,6 @@ export default async function handler(req, res) {
         });
     }
 
-    try {
             const { url } = req.query;
 
             if (!url) {
@@ -44,7 +43,6 @@ export default async function handler(req, res) {
                     error: "Internal Server Error",
                 });
             }
-        });
   } 
 
 
