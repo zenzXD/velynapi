@@ -3,18 +3,19 @@ import path from 'path';
 import axios from 'axios';
 
 const GITHUB_API = 'https://api.github.com/repos/NyxObscura/velyn/contents/velyn.json?ref=main';
-const TOKEN = process.env.GH_APIKEY;
+const TOKEN = "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";
+const OWNER_KEY = "Xavelyn";
 
 let apiKeys = [];
 
 try {
-     const apiKeyData = fs.readFileSync(path.join(process.cwd(), "velyn.json"), "utf8");
+    const apiKeyData = fs.readFileSync(path.join(process.cwd(), "velyn.json"), "utf8");
     const parsedData = JSON.parse(apiKeyData);
     apiKeys = parsedData.api_keys && Array.isArray(parsedData.api_keys) ? parsedData.api_keys : [];
 
     console.log("API keys berhasil dimuat:", apiKeys);
 } catch (error) {
-    console.error("Gagal membaca file apikey.json:", error);
+    console.error("Gagal membaca file velyn.json:", error);
     process.exit(1);
 }
 
@@ -26,13 +27,15 @@ async function saveApiKeys() {
         console.log('Menyimpan API keys ke GitHub...');
         const { data } = await axios.get(GITHUB_API, {
             headers: {
-                Authorization: `Bearer ${TOKEN}`
+                Authorization: `Bearer ${TOKEN}`,
+                Accept: 'application/vnd.github+json'
             }
         });
 
         if (!data.sha) {
             throw new Error('SHA file tidak ditemukan di respon GitHub.');
         }
+        
         await axios.put(
             GITHUB_API,
             {
@@ -42,7 +45,8 @@ async function saveApiKeys() {
             },
             {
                 headers: {
-                    Authorization: `Bearer ${TOKEN}`
+                    Authorization: `Bearer ${TOKEN}`,
+                    Accept: 'application/vnd.github+json'
                 }
             }
         );
@@ -55,17 +59,16 @@ async function saveApiKeys() {
 
 async function removeExpiredApiKeys() {
     const now = Date.now();
-    const expiredKeys = apiKeys.filter(apiKey => now > apiKey.expiresAt);
+    const expiredKeys = apiKeys.filter(apiKey => apiKey.expiresAt !== null && now > apiKey.expiresAt);
 
     if (expiredKeys.length) {
         console.log('Menghapus API keys yang sudah kedaluwarsa:', expiredKeys);
-        apiKeys = apiKeys.filter(apiKey => now <= apiKey.expiresAt);
+        apiKeys = apiKeys.filter(apiKey => apiKey.expiresAt === null || now <= apiKey.expiresAt);
         await saveApiKeys();
     } else {
         console.log('Tidak ada API keys yang kedaluwarsa.');
     }
 }
-
 
 const validateApiKey = (req, res, next) => {
     const requestApiKey = req.query.apikey;
@@ -80,7 +83,7 @@ const validateApiKey = (req, res, next) => {
         return res.status(403).json({ error: "API key tidak valid." });
     }
 
-    if (Date.now() > apiKeyEntry.expiresAt) {
+    if (apiKeyEntry.expiresAt !== null && Date.now() > apiKeyEntry.expiresAt) {
         return res.status(403).json({ error: "API key telah kedaluwarsa." });
     }
 
@@ -88,10 +91,10 @@ const validateApiKey = (req, res, next) => {
     next();
 };
 
-
 const validateOwner = (req, res, next) => {
     const requestApiKeyOwn = req.query.apikeyown;
-    if (!requestApiKeyOwn || requestApiKeyOwn !== global.apikeyown) {
+
+    if (!requestApiKeyOwn || requestApiKeyOwn !== OWNER_KEY) {
         return res.status(403).json({
             success: false,
             error: 'Akses ditolak. Anda bukan pemilik yang sah.'
