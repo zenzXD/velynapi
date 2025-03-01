@@ -16,7 +16,7 @@
     
     "/api/stalk/repostalk": {
       "get": {
-        "tags": ["Stalker"],
+        "tags": ["Stalk"],
         "description": "Ge",
         "parameters": [
           {
@@ -97,84 +97,6 @@
       }
     }
   },
-  "/api/stalk/FreeFireStalk": {
-  "get": {
-    "tags": ["Stalker"],
-    "parameters": [
-      {
-        "name": "id",
-        "in": "query",
-        "schema": { "type": "string" },
-        "required": true,
-        "description": "ID Free Fire pengguna"
-      }
-    ],
-    "responses": {
-      "200": {
-        "description": "Success",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": { "type": "boolean" },
-                "creator": { "type": "string" },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "name": { "type": "string" },
-                    "bio": { "type": "string" },
-                    "like": { "type": "integer" },
-                    "level": { "type": "integer" },
-                    "exp": { "type": "integer" },
-                    "region": { "type": "string" },
-                    "honorScore": { "type": "integer" },
-                    "brRank": { "type": "string" },
-                    "brRankPoint": { "type": "integer" },
-                    "csRankPoint": { "type": "integer" },
-                    "accountCreated": { "type": "string", "format": "date" },
-                    "lastLogin": { "type": "string", "format": "date-time" },
-                    "preferMode": { "type": "string" },
-                    "language": { "type": "string" },
-                    "booyahPassPremium": { "type": "boolean" },
-                    "booyahPassLevel": { "type": "integer" },
-                    "petInformation": {
-                      "type": "object",
-                      "properties": {
-                        "name": { "type": "string" },
-                        "level": { "type": "integer" },
-                        "exp": { "type": "integer" },
-                        "starMarked": { "type": "boolean" },
-                        "selected": { "type": "boolean" }
-                      }
-                    },
-                    "guild": { "type": "string" },
-                    "equippedItems": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": { "type": "string" },
-                          "img": { "type": "string", "format": "uri" }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "400": {
-        "description": "Bad Request - Parameter ID tidak valid"
-      },
-      "500": {
-        "description": "Internal Server Error"
-      }
-    }
-  }
-}, 
     "/api/tools/Carbonfyv1": {
       "post": {
         "tags": ["Tools"],
@@ -382,6 +304,11 @@
   "get": {
     "tags": ["Tools"],
     "summary": "Menghapus latar belakang gambar menggunakan AI",
+    "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
   "parameters": [
           {
             "name": "url",
@@ -391,6 +318,15 @@
             },
             "required": true,
             "description": "URL gambar yang akan dihapus latar belakangnya"
+          },
+          {
+            "name": "apikey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "API key yang diperlukan untuk akses"
           }
         ],
         "responses": {
@@ -412,6 +348,12 @@
           },
           "400": {
             "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+          },
+          "401": {
+            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+          },
+          "403": {
+            "description": "Forbidden - API Key tidak memiliki akses"
           },
           "500": {
             "description": "Internal Server Error"
@@ -664,53 +606,14 @@
         }
       }
     },
-    "/api/ai/doppleAI": {
-      "get": {
-        "tags": ["Artificial Intelligence"],
-        "parameters": [
-          {
-            "name": "prompt",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/api/ai/magicAI": {
-      "get": {
-        "tags": ["Artificial Intelligence"],
-        "parameters": [
-          {
-            "name": "prompt",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
 "/api/ai/magicStudio": {
   "get": {
     "tags": ["Artificial Intelligence"],
+     "security": [
+     {
+     "ApiKeyAuth": []
+     }
+     ],
     "parameters": [
       {
         "name": "prompt",
@@ -720,7 +623,16 @@
           "type": "string"
         },
         "description": "Deskripsi gambar yang ingin dihasilkan oleh AI"
-      }
+      },
+      {
+            "name": "apikey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "API key yang diperlukan untuk akses"
+          }
         ],
         "responses": {
           "200": {
@@ -741,6 +653,12 @@
           },
           "400": {
             "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+          },
+          "401": {
+            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+          },
+          "403": {
+            "description": "Forbidden - API Key tidak memiliki akses"
           },
           "500": {
             "description": "Internal Server Error"
@@ -972,6 +890,11 @@
       "get": {
         "tags": ["Downloader"],
         "summary": "Mengunduh audio dari video YouTube dalam format MP3",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "url",
@@ -981,7 +904,16 @@
             },
             "required": true,
             "description": "URL video YouTube yang akan diunduh sebagai MP3"
-          }    
+          },
+          {
+            "name": "apikey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "API key yang diperlukan untuk akses"
+          }
         ],
         "responses": {
           "200": {
@@ -1002,6 +934,12 @@
           },
           "400": {
             "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+          },
+          "401": {
+            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+          },
+          "403": {
+            "description": "Forbidden - API Key tidak memiliki akses"
           },
           "500": {
             "description": "Internal Server Error"
