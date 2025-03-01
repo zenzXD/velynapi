@@ -11,7 +11,6 @@ export default async function handler(req, res) {
         });
     }
 
-    return validateApiKey(req, res, async () => {
         const { url } = req.query;
 
         if (!url) {
@@ -38,9 +37,8 @@ export default async function handler(req, res) {
                 creator: CREATOR,
                 error: `Internal Server Error: ${error.message}`,
             });
-        }
-    });
-}
+        }   
+    }
 
 
 class YTDLMP3 {
