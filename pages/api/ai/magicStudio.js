@@ -11,7 +11,6 @@ export default async function handler(req, res) {
         });
     }
 
-    try {
             const { prompt } = req.query;
 
             if (!prompt) {
@@ -40,7 +39,6 @@ export default async function handler(req, res) {
                     error: "Internal Server Error",
                 });
             }
-        });
     }
 
 function getTimestamp() {
