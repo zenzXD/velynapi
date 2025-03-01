@@ -11,37 +11,21 @@ export default async function handler(req, res) {
         });
     }
 
-    const { id } = req.query;  
-    if (!id) {
-        return res.status(400).json({
-            status: false,
-            creator: CREATOR,
-            error: "ID Free Fire tidak boleh kosong",
-        });
-    }
-
+    const { id } = req.query;
+    
     try {
-        const data = await ffStalk(id);
-
-        if (!data || Object.keys(data).length === 0) {
-            return res.status(404).json({
-                status: false,
-                creator: CREATOR,
-                error: "Data tidak ditemukan atau ID tidak valid",
-            });
-        }
-
+        const data = await robloxStalk(id);
         res.status(200).json({
             status: true,
             creator: CREATOR,
             data: data,
         });
     } catch (error) {
-        console.error("Error fetching Free Fire data:", error.message);
+        console.error(error);
         res.status(500).json({
             status: false,
             creator: CREATOR,
-            error: "Terjadi kesalahan saat mengambil data Free Fire",
+            error: "Internal Server Error",
         });
     }
 }
