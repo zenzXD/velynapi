@@ -313,16 +313,7 @@
             },
             "required": true,
             "description": "URL gambar yang akan dihapus latar belakangnya"
-          },
-          {
-            "name": "apikey",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "API key yang diperlukan untuk akses"
-          }
+          },         
         ],
         "responses": {
           "200": {
