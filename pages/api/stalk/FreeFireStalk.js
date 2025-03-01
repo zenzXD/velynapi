@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     const { id } = req.query;
     
     try {
-        const data = await robloxStalk(id);
+        const data = await ffStalk(id);
         res.status(200).json({
             status: true,
             creator: CREATOR,
