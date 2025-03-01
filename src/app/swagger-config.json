@@ -304,11 +304,6 @@
   "get": {
     "tags": ["Tools"],
     "summary": "Menghapus latar belakang gambar menggunakan AI",
-    "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
   "parameters": [
           {
             "name": "url",
@@ -318,15 +313,6 @@
             },
             "required": true,
             "description": "URL gambar yang akan dihapus latar belakangnya"
-          },
-          {
-            "name": "apikey",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "API key yang diperlukan untuk akses"
           }
         ],
         "responses": {
@@ -348,12 +334,6 @@
           },
           "400": {
             "description": "Bad Request - Parameter 'url' tidak boleh kosong"
-          },
-          "401": {
-            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
-          },
-          "403": {
-            "description": "Forbidden - API Key tidak memiliki akses"
           },
           "500": {
             "description": "Internal Server Error"
