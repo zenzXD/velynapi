@@ -1,12 +1,3 @@
-:root {
-  --primary: #0070f3;
-  --secondary: #1a1a1a;
-  --bg-light: #f9f9f9;
-  --text-dark: #333;
-  --text-light: #fff;
-  --border-radius: 10px;
-}
-
 .container {
   display: flex;
   align-items: center;
