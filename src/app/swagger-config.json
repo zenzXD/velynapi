@@ -609,11 +609,6 @@
 "/api/ai/magicStudio": {
   "get": {
     "tags": ["Artificial Intelligence"],
-     "security": [
-     {
-     "ApiKeyAuth": []
-     }
-     ],
     "parameters": [
       {
         "name": "prompt",
@@ -623,16 +618,7 @@
           "type": "string"
         },
         "description": "Deskripsi gambar yang ingin dihasilkan oleh AI"
-      },
-      {
-            "name": "apikey",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "API key yang diperlukan untuk akses"
-          }
+      }
         ],
         "responses": {
           "200": {
@@ -653,12 +639,6 @@
           },
           "400": {
             "description": "Bad Request - Parameter 'url' tidak boleh kosong"
-          },
-          "401": {
-            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
-          },
-          "403": {
-            "description": "Forbidden - API Key tidak memiliki akses"
           },
           "500": {
             "description": "Internal Server Error"
