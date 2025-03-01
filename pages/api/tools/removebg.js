@@ -12,7 +12,6 @@ export default async function handler(req, res) {
     }
 
     try {
-        await validateApiKey(req, res, async () => {
             const { url } = req.query;
 
             if (!url) {
@@ -55,7 +54,6 @@ export default async function handler(req, res) {
             error: "Internal Server Error",
         });
     }
-}
 
 async function removebg(url) {
     try {
