@@ -940,6 +940,54 @@
         }
       }
     },
+    "/api/downloader/capcut": {
+      "get": {
+        "tags": ["Downloader"],
+        "summary": "Mendownload link url dari capcut",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "URL video capcut yang akan diunduh"
+          }, 
+          {
+            "name": "apikey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "API key yang diperlukan untuk akses"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+         "400": {
+            "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+          },
+          "401": {
+            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+          },
+          "403": {
+            "description": "Forbidden - API Key tidak memiliki akses"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/search/bstationSearch": {
       "get": {
         "tags": ["Search"],
@@ -1001,7 +1049,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "URL video TikTok yang akan diunduh"
+            "description": "URL MediaFire yang akan diunduh"
           }, 
           {
             "name": "apikey",
