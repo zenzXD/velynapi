@@ -984,6 +984,54 @@
         }
       }
     },
+    "/api/downloader/mediafire": {
+      "get": {
+        "tags": ["Downloader"],
+        "summary": "Mendownload link url dari mediafire",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "URL video TikTok yang akan diunduh"
+          }, 
+          {
+            "name": "apikey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "API key yang diperlukan untuk akses"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+         "400": {
+            "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+          },
+          "401": {
+            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+          },
+          "403": {
+            "description": "Forbidden - API Key tidak memiliki akses"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/downloader/ytmp3": {
       "get": {
         "tags": ["Downloader"],
