@@ -439,9 +439,14 @@
         }
       }
   },
-    "/api/maker/brat": {
+  "/api/maker/brat": {
   "get": {
     "tags": ["Maker"],
+    "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
     "parameters": [
       {
         "name": "text",
@@ -451,6 +456,15 @@
         },
         "required": true,
         "description": "Teks yang akan diubah menjadi brat image"
+      },
+      {
+        "name": "apikey",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "API key yang diperlukan untuk akses"
       }
     ],
     "responses": {
@@ -482,6 +496,12 @@
       },
       "401": {
         "description": "Unauthorized"
+      },
+      "401": {
+        "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+      },
+      "403": {
+        "description": "Forbidden - API Key tidak memiliki akses"
       },
       "500": {
         "description": "Internal Server Error"
