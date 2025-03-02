@@ -1,12 +1,20 @@
+"use client";
+
 import styles from "./pricing.module.css";
 import { FaCheckCircle } from "react-icons/fa";
-
-export const metadata = {
-  title: "Pricing Page",
-  description: "Pricing description",
-};
+import { useRouter } from "next/navigation";
 
 const PricingPage = () => {
+  const router = useRouter();
+
+  const handleButtonClick = (plan) => {
+    if (plan === "Free Plan" || plan === "Pro Plan" || plan === "Premium Plan") {
+      const whatsappNumber = "62895342022385"; 
+      const message = encodeURIComponent(`Halo permisi, saya ingin berlangganan ${plan}. Mohon informasi lebih lanjut.`);
+      window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>
@@ -24,7 +32,8 @@ const PricingPage = () => {
             price: "Rp 0 / 5 day",
             features: [
               "3,000 / Limit",
-              "Akses ke semua endpoint"
+              "Akses ke semua endpoint",
+              "Key User Free"
           ],
             button: "Mulai Sekarang"
           },
@@ -47,7 +56,7 @@ const PricingPage = () => {
               "20,000 / Limit",
               "Akses ke endpoint dasar",
               "Dukungan prioritas 24/8",
-              "Premium User",
+              "Custom APikey",
               "fast respon Endpoint"
             ],
             button: "Langganan",
@@ -62,7 +71,9 @@ const PricingPage = () => {
                 <li key={i}><FaCheckCircle className={styles.icon} /> {feature}</li>
               ))}
             </ul>
-            <button className={styles.button}>{plan.button}</button>
+            <button className={styles.button} onClick={() => handleButtonClick(plan.title)}>
+              {plan.button}
+            </button>
           </div>
         ))}
       </div>
