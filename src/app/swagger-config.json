@@ -615,6 +615,79 @@
       }
     }
   },
+  "/api/search/jadwalSholat": {
+  "get": {
+    "tags": ["Search"],
+    "parameters": [
+      {
+        "name": "query",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Nama kota untuk mencari jadwal sholat"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "imsak": { "type": "string", "description": "Waktu imsak" },
+                    "subuh": { "type": "string", "description": "Waktu subuh" },
+                    "dzuhur": { "type": "string", "description": "Waktu dzuhur" },
+                    "ashar": { "type": "string", "description": "Waktu ashar" },
+                    "maghrib": { "type": "string", "description": "Waktu maghrib" },
+                    "isya": { "type": "string", "description": "Waktu isya" },
+                    "all": {
+                      "type": "array",
+                      "description": "Jadwal sholat lengkap untuk beberapa hari",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "tanggal": { "type": "string", "description": "Tanggal jadwal" },
+                          "jadwal": {
+                            "type": "object",
+                            "properties": {
+                              "imsak": { "type": "string" },
+                              "subuh": { "type": "string" },
+                              "dzuhur": { "type": "string" },
+                              "ashar": { "type": "string" },
+                              "maghrib": { "type": "string" },
+                              "isya": { "type": "string" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'query' tidak valid atau kosong"
+      },
+      "404": {
+        "description": "Not Found - Data jadwal sholat tidak ditemukan untuk kota tersebut"
+      },
+      "500": {
+        "description": "Internal Server Error - Kesalahan pada server"
+      }
+    }
+  }
+}, 
   "/api/search/cineplex": {
     "get": {
       "tags": ["Search"],
