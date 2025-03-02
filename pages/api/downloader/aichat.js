@@ -10,10 +10,10 @@ export default async function handler(req, res) {
         });
     }
 
-    const { query } = req.query;
+    const { prompt } = req.query;
     
     try {
-        const data = await robloxStalk(query); // ini error gak ada
+        const data = await Ai4Chat(prompt); // ini error gak ada
         res.status(200).json({
             status: true,
             creator: CREATOR,
