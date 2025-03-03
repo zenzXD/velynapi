@@ -1259,6 +1259,31 @@
         }
       }
     },
+    "/api/downloader/twitter": {
+      "get": {
+        "tags": ["Downloader"],
+        "summary": "Mendownload video dari Twitter dan X",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "URL video Twitter dan X yang akan diunduh"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/downloader/tiktok": {
       "get": {
         "tags": ["Downloader"],
