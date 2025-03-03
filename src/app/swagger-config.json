@@ -1013,6 +1013,66 @@
         }
       }
   },
+  "/api/ai/text2img": {
+  "get": {
+    "tags": ["Artificial Intelligence"],
+     "security": [
+     {
+     "ApiKeyAuth": []
+     }
+     ],
+    "parameters": [
+      {
+        "name": "prompt",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Deskripsi gambar yang ingin dihasilkan oleh AI"
+      },
+      {
+            "name": "apikey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "API key yang diperlukan untuk akses"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "creator": { "type": "string" },
+                    "input": { "type": "string" },
+                    "output": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+          },
+          "401": {
+            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+          },
+          "403": {
+            "description": "Forbidden - API Key tidak memiliki akses"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+  },
      "/api/ai/simi": {
       "get": {
         "tags": ["Artificial Intelligence"],
