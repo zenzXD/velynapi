@@ -561,8 +561,109 @@
         "description": "Internal Server Error"
       }
     }
-  }
+  }      
 },
+"/api/search/goodDreamer": {
+    "get": {
+      "tags": ["Search"],
+      "summary": "Mencari novel di GoodDreamer",
+      "parameters": [
+        {
+          "name": "query",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "Kata kunci untuk mencari novel berdasarkan judul atau penulis"
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "schema": {
+            "type": "integer",
+            "default": 10
+          },
+          "required": false,
+          "description": "Jumlah hasil maksimal yang ingin ditampilkan (default: 10)"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": { "type": "string" },
+                        "author": { "type": "string" },
+                        "rating": { "type": "number" },
+                        "thumbnail": { "type": "string", "format": "uri" },
+                        "link": { "type": "string", "format": "uri" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request - Parameter 'query' tidak boleh kosong",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized - API Key salah atau tidak disertakan",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error - Terjadi kesalahan pada server",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },          
   "/api/search/caribuku": {
     "get": {
       "tags": ["Search"],
@@ -777,6 +878,28 @@
         }
       }
     },
+    "/api/ai/mistralNemo": {
+      "get": {
+        "tags": ["Artificial Intelligence"],
+        "parameters": [
+          {
+            "name": "prompt",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
 "/api/ai/magicStudio": {
   "get": {
     "tags": ["Artificial Intelligence"],
@@ -881,7 +1004,29 @@
         }
       }
     },
-     "/api/ai/deepseek": {
+    "/api/ai/deepseek-coder-67b": {
+      "get": {
+        "tags": ["Artificial Intelligence"],
+        "parameters": [
+          {
+            "name": "prompt",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+     "/api/ai/deepseek-r1": {
       "get": {
         "tags": ["Artificial Intelligence"],
         "parameters": [
