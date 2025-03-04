@@ -1472,7 +1472,118 @@
         }
       }
   },
-
+  "/api/downloader/ytmp3v2": {
+  "get": {
+    "tags": ["Downloader"],
+    "summary": "Mengunduh audio dari video YouTube dalam format MP3",
+    "description": "Endpoint ini digunakan untuk mengonversi video YouTube menjadi file MP3 dengan menyediakan URL video dan API key.",
+    "security": [
+      {
+        "ApiKeyAuth": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "url",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "URL video YouTube yang akan dikonversi menjadi MP3."
+      },
+      {
+        "name": "apikey",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "API key yang diperlukan untuk mengakses layanan ini."
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Berhasil mendapatkan link unduhan MP3.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "input": { "type": "string" },
+                "output": { "type": "string" },
+                "title": { "type": "string" },
+                "thumbnail": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'url' tidak boleh kosong atau tidak valid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized - API Key tidak valid atau tidak diberikan.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Forbidden - API Key tidak memiliki akses ke layanan ini.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error - Kesalahan pada server.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}, 
     "/api/downloader/ytmp4": {
       "get": {
         "tags": ["Downloader"],
