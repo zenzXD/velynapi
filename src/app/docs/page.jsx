@@ -22,10 +22,13 @@ export default function Home() {
     if (swaggerConfig && swaggerConfig.paths) {
       Object.entries(swaggerConfig.paths).forEach(([path, methods]) => {
         Object.entries(methods).forEach(([method, details]) => {
-          if (details?.tags) {
+          if (details && details.tags) {
             count++;
             details.tags.forEach((tag) => {
-              categoryCount[tag] = (categoryCount[tag] || 0) + 1;
+              if (!categoryCount[tag]) {
+                categoryCount[tag] = 0;
+              }
+              categoryCount[tag]++;
             });
           }
         });
@@ -33,10 +36,8 @@ export default function Home() {
     }
 
     setTotalEndpoints(count);
-    setCategories(
-      Object.entries(categoryCount).map(([name, count]) => ({ name, count }))
-    );
-  }, []);
+    setCategories(Object.entries(categoryCount).map(([name, count]) => ({ name, count })));
+  }, [swaggerConfig]);
 
   return (
     <>
@@ -50,8 +51,10 @@ export default function Home() {
         <SpeedInsights />
 
         <div className="container">
+          {/* Total Endpoints */}
           <h1 className="total-endpoints">Total Endpoints: {totalEndpoints}</h1>
 
+          {/* Category Buttons */}
           <div className="category-container">
             {categories.length > 0 ? (
               categories.map((category, index) => (
@@ -61,9 +64,7 @@ export default function Home() {
                   onClick={() => setSelectedCategory(selectedCategory === category.name ? null : category.name)}
                 >
                   {category.name} ({category.count})
-                  <span className="arrow">
-                    {selectedCategory === category.name ? "▲" : "▶"}
-                  </span>
+                  <span className="arrow">{selectedCategory === category.name ? "▲" : "▶"}</span>
                 </button>
               ))
             ) : (
@@ -71,12 +72,15 @@ export default function Home() {
             )}
           </div>
 
+          {/* Modal Swagger UI */}
           {selectedCategory && (
-            <div className="swagger-modal">
+            <div className="modal">
               <span className="close-btn" onClick={() => setSelectedCategory(null)}>✖</span>
+
               <SwaggerUI
                 spec={{
                   ...swaggerConfig,
+                  info: {},
                   paths: Object.fromEntries(
                     Object.entries(swaggerConfig.paths).filter(([_, value]) =>
                       Object.values(value).some((method) => method.tags?.includes(selectedCategory))
@@ -100,26 +104,25 @@ export default function Home() {
         }
 
         .total-endpoints {
-          font-size: 26px;
+          font-size: 24px;
           font-weight: bold;
           text-align: center;
-          margin-bottom: 15px;
-          color: #e0e0ff;
+          margin-bottom: 20px;
         }
 
         .category-container {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 10px;
+          justify-content: center;
           align-items: center;
-          margin-top: 10px;
         }
 
         .category-button {
           width: 80%;
           background: #181842;
           padding: 14px 18px;
-          border-radius: 10px;
+          border-radius: 8px;
           color: white;
           font-size: 18px;
           font-weight: bold;
@@ -129,25 +132,25 @@ export default function Home() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          box-shadow: 0 4px 8px rgba(90, 12, 163, 0.4);
+          box-shadow: 0 4px 6px rgba(90, 12, 163, 0.4);
         }
 
         .category-button:hover {
-          background: #25255a;
+          background: #20205a;
           transform: scale(1.05);
         }
 
         .category-button.active {
-          background: #2a1d6d;
-          box-shadow: 0 6px 12px rgba(74, 12, 131, 0.5);
+          background: #251d6d;
+          box-shadow: 0 6px 10px rgba(74, 12, 131, 0.5);
         }
 
         .arrow {
-          font-size: 18px;
-          font-weight: bold;
+          font-size: 16px;
+          transition: transform 0.3s ease-in-out;
         }
 
-        .swagger-modal {
+        .modal {
           position: fixed;
           top: 50%;
           left: 50%;
@@ -166,9 +169,9 @@ export default function Home() {
 
         .close-btn {
           position: absolute;
-          top: 15px;
-          left: 15px;
-          font-size: 22px;
+          top: 10px;
+          left: 10px;
+          font-size: 20px;
           font-weight: bold;
           cursor: pointer;
           color: white;
@@ -177,7 +180,7 @@ export default function Home() {
         @keyframes fadeIn {
           from {
             opacity: 0;
-            transform: translate(-50%, -55%);
+            transform: translate(-50%, -60%);
           }
           to {
             opacity: 1;
@@ -185,38 +188,11 @@ export default function Home() {
           }
         }
 
-        :global(.swagger-ui) {
-          background: #1a1a2e !important;
-          color: white !important;
-          border-radius: 10px;
-          padding: 15px;
-        }
-
-        :global(.swagger-ui .topbar) {
-          display: none;
-        }
-
-        :global(.swagger-ui .opblock) {
-          border-radius: 8px !important;
-          background: #2a2a3a !important;
-        }
-
-        :global(.swagger-ui .opblock-summary-method-get) {
-          background: #4a90e2 !important;
-        }
-
-        :global(.swagger-ui .opblock-summary-method-post) {
-          background: #2ecc71 !important;
-        }
-
-        :global(.swagger-ui .btn) {
-          background: #5a0ca3 !important;
-          color: white !important;
-          border-radius: 5px !important;
-        }
-
-        :global(.swagger-ui .btn:hover) {
-          background: #6a0dad !important;
+        @media (max-width: 768px) {
+          .category-button {
+            width: 100%;
+            font-size: 16px;
+          }
         }
       `}</style>
     </>
