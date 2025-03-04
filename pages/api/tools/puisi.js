@@ -12,15 +12,15 @@ export default async function handler(req, res) {
     }
 
     try {
-        const data = await puisi(); // Memanggil fungsi puisi yang benar
-        if (!data) {
+        const hasilPuisi = await puisi();
+        if (!hasilPuisi) {
             throw new Error("Tidak ada puisi yang ditemukan.");
         }
 
         res.status(200).json({
             status: true,
             creator: CREATOR,
-            data: data,
+            data: hasilPuisi,
         });
     } catch (error) {
         console.error("Error:", error.message);
@@ -71,7 +71,7 @@ async function puisi() {
         }
 
         let randomIndex = Math.floor(Math.random() * puisiFormatted.length);
-        return puisiFormatted[randomIndex].join("\n");
+        return puisiFormatted[randomIndex];
     } catch (error) {
         console.error("Scraping error:", error.message);
         throw new Error("Terjadi kesalahan dalam mengambil data puisi.");
