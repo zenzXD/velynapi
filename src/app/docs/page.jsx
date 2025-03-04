@@ -77,19 +77,21 @@ export default function Home() {
             <div className="modal">
               <span className="close-btn" onClick={() => setSelectedCategory(null)}>✖</span>
 
-              <SwaggerUI
-                spec={{
-                  ...swaggerConfig,
-                  info: {},
-                  paths: Object.fromEntries(
-                    Object.entries(swaggerConfig.paths).filter(([_, value]) =>
-                      Object.values(value).some((method) => method.tags?.includes(selectedCategory))
-                    )
-                  ),
-                }}
-                docExpansion="none"
-                defaultModelsExpandDepth={-1}
-              />
+              <div className="swagger-container">
+                <SwaggerUI
+                  spec={{
+                    ...swaggerConfig,
+                    info: {},
+                    paths: Object.fromEntries(
+                      Object.entries(swaggerConfig.paths).filter(([_, value]) =>
+                        Object.values(value).some((method) => method.tags?.includes(selectedCategory))
+                      )
+                    ),
+                  }}
+                  docExpansion="none"
+                  defaultModelsExpandDepth={-1}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -106,7 +108,6 @@ export default function Home() {
         .total-endpoints {
           font-size: 24px;
           font-weight: bold;
-          text-align: center;
           margin-bottom: 20px;
         }
 
@@ -155,8 +156,8 @@ export default function Home() {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 90%;
-          max-width: 1000px;
+          width: 95%;
+          max-width: 900px;
           height: 80vh;
           background: #220f40;
           border-radius: 15px;
@@ -167,14 +168,25 @@ export default function Home() {
           animation: fadeIn 0.3s ease-in-out;
         }
 
+        .swagger-container {
+          padding: 10px;
+          background: #1a1a3d;
+          border-radius: 10px;
+          max-height: 100%;
+          overflow-y: auto;
+        }
+
         .close-btn {
           position: absolute;
           top: 10px;
-          left: 10px;
+          right: 10px;
           font-size: 20px;
           font-weight: bold;
           cursor: pointer;
           color: white;
+          background: red;
+          padding: 5px;
+          border-radius: 50%;
         }
 
         @keyframes fadeIn {
@@ -192,6 +204,15 @@ export default function Home() {
           .category-button {
             width: 100%;
             font-size: 16px;
+          }
+
+          .modal {
+            width: 100%;
+            height: 90vh;
+          }
+
+          .swagger-container {
+            padding: 5px;
           }
         }
       `}</style>
