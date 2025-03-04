@@ -1,4 +1,3 @@
-import { validateApiKey } from "../../../apikeyy.js";
 import { CREATOR } from "../../../settings.js";
 import axios from "axios";
 
@@ -11,7 +10,6 @@ export default async function handler(req, res) {
         });
     }
 
-    return validateApiKey(req, res, async () => {
         const { url } = req.query;
 
         if (!url) {
@@ -42,8 +40,7 @@ export default async function handler(req, res) {
                 error: `Internal Server Error: ${error.message}`,
             });
         }
-    });
-}
+    }
 
 const GetIdYoutube = async (url) => {
     try {
