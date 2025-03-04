@@ -492,6 +492,63 @@
     }
   }
 }, 
+  "/api/tools/puisi": {
+  "get": {
+    "tags": ["Tools"],
+    "summary": "Get a random puisi",
+    "description": "Fetches a random puisi from the website",
+    "responses": {
+      "200": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean"
+                },
+                "creator": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized"
+      },
+      "405": {
+        "description": "Method Not Allowed"
+      },
+      "500": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean"
+                },
+                "creator": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}, 
   "/api/maker/brat": {
   "get": {
     "tags": ["Maker"],
