@@ -968,7 +968,7 @@
   },
     "/api/ai/openai": {
       "get": {
-        "tags": ["Artificial Intelligence"],
+        "tags": ["Chat AI"],
         "parameters": [
           {
             "name": "prompt",
@@ -990,7 +990,7 @@
     },
     "/api/ai/mistralNemo": {
       "get": {
-        "tags": ["Artificial Intelligence"],
+        "tags": ["Chat AI"],
         "parameters": [
           {
             "name": "prompt",
@@ -1012,7 +1012,7 @@
     },
 "/api/ai/magicStudio": {
   "get": {
-    "tags": ["Artificial Intelligence"],
+    "tags": ["AI Generator"],
      "security": [
      {
      "ApiKeyAuth": []
@@ -1072,7 +1072,7 @@
   },
   "/api/ai/text2img": {
   "get": {
-    "tags": ["Artificial Intelligence"],
+    "tags": ["AI Generator"],
      "security": [
      {
      "ApiKeyAuth": []
@@ -1132,7 +1132,7 @@
   },
      "/api/ai/simi": {
       "get": {
-        "tags": ["Artificial Intelligence"],
+        "tags": ["Chat AI"],
         "parameters": [
           {
             "name": "prompt",
@@ -1154,7 +1154,7 @@
     },  
      "/api/ai/gemini": {
       "get": {
-        "tags": ["Artificial Intelligence"],
+        "tags": ["Chat AI"],
         "parameters": [
           {
             "name": "prompt",
@@ -1176,7 +1176,7 @@
     },
     "/api/ai/deepseek-coder-67b": {
       "get": {
-        "tags": ["Artificial Intelligence"],
+        "tags": ["Chat AI"],
         "parameters": [
           {
             "name": "prompt",
@@ -1198,7 +1198,7 @@
     },
      "/api/ai/deepseek-r1": {
       "get": {
-        "tags": ["Artificial Intelligence"],
+        "tags": ["Chat AI"],
         "parameters": [
           {
             "name": "prompt",
