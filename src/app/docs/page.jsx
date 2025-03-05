@@ -5,10 +5,10 @@ import "swagger-ui-react/swagger-ui.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import swaggerConfig from "../swagger-config.json";
+import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
-import { Poppins } from "next/font/google";
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "600", "700"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -36,7 +36,11 @@ export default function Home() {
     }
 
     setTotalEndpoints(count);
-    setCategories(Object.entries(categoryCount).map(([name, count]) => ({ name, count })));
+    setCategories(
+      Object.entries(categoryCount)
+        .map(([name, count]) => ({ name, count }))
+        .sort((a, b) => b.count - a.count)
+    );
   }, [swaggerConfig]);
 
   return (
@@ -46,39 +50,60 @@ export default function Home() {
         <meta name="description" content="VelynApi is a free, simple REST API." />
       </Head>
 
-      <main className={`min-h-screen flex flex-col items-center ${poppins.className}`} style={{ backgroundColor: "#0d0d1a", color: "white" }}>
+      <main className={`min-h-screen flex flex-col items-center ${inter.className}`} style={{ backgroundColor: "#0d0d1a", color: "white" }}>
         <Analytics />
         <SpeedInsights />
 
         <div className="container">
-          <h1 className="title">VelynAPI Dashboard</h1>
-          <p className="subtitle">Total Endpoints: {totalEndpoints}</p>
+          {/* Total Endpoints Header */}
+          <div className="endpoints-header">
+            <h1 className="total-endpoints">
+              Total Endpoints: 
+              <span className="endpoint-count">{totalEndpoints}</span>
+            </h1>
+          </div>
 
-          <div className="category-container">
+          {/* Category Buttons Grid */}
+          <div className="category-grid">
             {categories.length > 0 ? (
               categories.map((category, index) => (
                 <button
                   key={index}
-                  className={`category-button ${selectedCategory === category.name ? "active" : ""}`}
+                  className={`category-card ${selectedCategory === category.name ? "active" : ""}`}
                   onClick={() => setSelectedCategory(selectedCategory === category.name ? null : category.name)}
                 >
-                  {category.name} ({category.count})
-                  <span className="arrow">{selectedCategory === category.name ? "▲" : "▶"}</span>
+                  {selectedCategory === category.name && (
+                    <span className="close-icon">✖</span>
+                  )}
+                  <div className="category-content">
+                    <span className="category-name">{category.name}</span>
+                    <span className="category-endpoint-count">{category.count} endpoint</span>
+                  </div>
+                  <span className="expand-icon">
+                    {selectedCategory === category.name ? "▲" : "▶"}
+                  </span>
                 </button>
               ))
             ) : (
-              <p className="empty-text">Tidak ada kategori tersedia</p>
+              <p>Tidak ada kategori tersedia</p>
             )}
           </div>
 
+          {/* Modal Swagger UI */}
           {selectedCategory && (
-            <div className="modal">
-              <span className="close-btn" onClick={() => setSelectedCategory(null)}>✖</span>
+            <div className="swagger-modal">
+              <div className="swagger-modal-content">
+                <span 
+                  onClick={() => setSelectedCategory(null)} 
+                  className="close-modal-button"
+                >
+                  ✖
+                </span>
 
-              <div className="swagger-container">
                 <SwaggerUI
                   spec={{
                     ...swaggerConfig,
+                    info: {},
                     paths: Object.fromEntries(
                       Object.entries(swaggerConfig.paths).filter(([_, value]) =>
                         Object.values(value).some((method) => method.tags?.includes(selectedCategory))
@@ -99,139 +124,192 @@ export default function Home() {
           width: 90%;
           max-width: 1200px;
           text-align: center;
-          padding: 30px;
         }
 
-        .title {
-          font-size: 32px;
-          font-weight: 700;
-          margin-bottom: 10px;
-          color: #ffffff;
-        }
-
-        .subtitle {
-          font-size: 18px;
-          font-weight: 400;
-          color: #b0b0b0;
+        .endpoints-header {
           margin-bottom: 20px;
         }
 
-        .category-container {
+        .total-endpoints {
+          font-size: 24px;
+          font-weight: bold;
+          text-align: center;
           display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
           justify-content: center;
+          align-items: center;
+          gap: 15px;
         }
 
-        .category-button {
-          width: 200px;
-          background: linear-gradient(135deg, #6e45e2, #88d3ce);
-          padding: 12px 16px;
+        .endpoint-count {
+          background: #5a0ca3;
+          color: white;
+          padding: 5px 15px;
+          border-radius: 8px;
+          font-size: 22px;
+        }
+
+        .category-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          justify-content: center;
+          align-items: center;
+          margin-top: 5px;
+          margin-bottom: 0px;
+        }
+
+        .category-card {
+          width: 80%;
+          background: #181842;
+          padding: 14px 18px;
           border-radius: 8px;
           color: white;
-          font-size: 16px;
-          font-weight: 600;
+          font-size: 18px;
+          font-weight: bold;
           border: none;
           cursor: pointer;
-          transition: all 0.3s ease-in-out;
+          transition: 0.3s ease-in-out;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 4px 6px rgba(90, 12, 163, 0.4);
+          margin-top: 5px;
+          position: relative;
         }
 
-        .category-button:hover {
-          background: linear-gradient(135deg, #5a35c9, #72b7a4);
+        .category-card:hover {
+          background: #20205a;
           transform: scale(1.05);
         }
 
-        .category-button.active {
-          background: linear-gradient(135deg, #4b1fa0, #60a091);
-          box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+        .category-card.active {
+          background: #251d6d;
+          box-shadow: 0 6px 10px rgba(74, 12, 131, 0.5);
+          transform: translateY(-5px);
         }
 
-        .arrow {
+        .close-icon {
+          position: absolute;
+          left: 10px;
+          font-size: 18px;
+          font-weight: bold;
+          cursor: pointer;
+          color: purple;
+        }
+
+        .category-content {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          flex-grow: 1;
+          margin-left: 15px;
+        }
+
+        .category-name {
+          font-size: 18px;
+        }
+
+        .category-endpoint-count {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.7);
+        }
+
+        .expand-icon {
           font-size: 16px;
           transition: transform 0.3s ease-in-out;
         }
 
-        .empty-text {
-          font-size: 16px;
-          color: #b0b0b0;
-        }
-
-        .modal {
+        .swagger-modal {
           position: fixed;
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
           width: 90%;
-          max-width: 800px;
-          height: 85vh;
-          background: #15102c;
+          max-width: 1000px;
+          height: 80vh;
+          background:rgb(1, 12, 21);
           border-radius: 15px;
           padding: 20px;
           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
           overflow-y: auto;
-          z-index: 1000;
-          animation: fadeIn 0.3s ease-in-out;
         }
 
-        .swagger-container {
-          padding: 10px;
-          background: #1a1a3d;
-          border-radius: 10px;
-          max-height: 100%;
-          overflow-y: auto;
-        }
-
-        .close-btn {
+        .close-modal-button {
           position: absolute;
           top: 10px;
-          right: 10px;
+          left: 10px;
           font-size: 20px;
           font-weight: bold;
           cursor: pointer;
           color: white;
-          background: red;
-          padding: 5px;
-          border-radius: 50%;
-          transition: all 0.3s ease-in-out;
+        }
+      `}</style>
+
+      <style jsx global>{`
+       /* Swagger UI Styling with Modern, Soft Design */
+        .swagger-ui {
+          background: transparent !important;
+          color: white !important;
         }
 
-        .close-btn:hover {
-          background: darkred;
+        .swagger-ui .topbar {
+          display: none;
         }
 
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translate(-50%, -60%);
-          }
-          to {
-            opacity: 1;
-            transform: translate(-50%, -50%);
-          }
+        .swagger-ui .opblock {
+          border-radius: 12px !important;
+          margin-bottom: 16px !important;
+          overflow: hidden !important;
+          box-shadow: 0 4px 6px rgb(5, 105, 151) !important;
+          transition: all 0.3s ease !important;
         }
 
-        @media (max-width: 768px) {
-          .title {
-            font-size: 28px;
-          }
+        .swagger-ui .opblock:hover {
+          transform: translateY(-3px) !important;
+          box-shadow: 0 6px 12px rgba(11, 117, 153, 0.89) !important;
+        }
 
-          .category-button {
-            width: 100%;
-            font-size: 14px;
-          }
+        .swagger-ui .opblock-summary {
+          padding: 12px 16px !important;
+          background: rgba(1, 36, 107, 0.99) !important;
+        }
 
-          .modal {
-            width: 95%;
-            height: 90vh;
-          }
+        .swagger-ui .opblock-summary-method {
+          border-radius: 6px !important;
+          font-weight: bold !important;
+          padding: 6px 12px !important;
+          text-transform: uppercase !important;
+          letter-spacing: 1px !important;
+        }
 
-          .swagger-container {
-            padding: 5px;
-          }
+        .swagger-ui .opblock-summary-method-get {
+          background: rgba(14, 68, 128, 0.46) !important;
+          color:rgb(184, 197, 213) !important;
+          border: 1px solid rgba(74, 144, 226, 0.5) !important;
+        }
+
+        .swagger-ui .opblock-summary-method-post {
+          background: rgba(46, 204, 113, 0.2) !important;
+          color: #2ecc71 !important;
+          border: 1px solid rgba(46, 204, 113, 0.5) !important;
+        }
+
+        .swagger-ui .opblock-summary-path {
+          color: rgba(224, 224, 255, 0.7) !important;
+          font-family: 'monospace' !important;
+        }
+
+        .swagger-ui .btn {
+          background:rgb(29, 12, 46) !important;
+          color: white !important;
+          border-radius: 8px !important;
+          transition: all 0.3s ease !important;
+        }
+
+        .swagger-ui .btn:hover {
+          background:rgb(4, 70, 121) !important;
+          transform: translateY(-2px) !important;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.2) !important;
         }
       `}</style>
     </>
