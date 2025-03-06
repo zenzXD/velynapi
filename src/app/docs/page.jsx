@@ -7,86 +7,131 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import swaggerConfig from "../swagger-config.json";
 import { Inter } from "next/font/google";
-import styled from "styled-components";
+import { useEffect } from "react";
+//import { tailwindCSS } from "tailwindcss";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const Container = styled.main`
-  font-family: ${inter.style.fontFamily};
-  padding: 20px;
-  background-color: #f9f9f9;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Card = styled.div`
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 1200px;
-`;
-
-const StyledSwaggerUI = styled(SwaggerUI)`
-  .swagger-ui .opblock {
-    border-radius: 12px;
-    margin-bottom: 16px;
-    border: 2px solid rgba(5, 105, 151, 0.5);
-    box-shadow: 0 4px 6px rgba(5, 105, 151, 0.4);
-    transition: all 0.3s ease;
-  }
-
-  .swagger-ui .opblock:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(11, 117, 153, 0.7);
-  }
-
-  .swagger-ui .opblock-summary {
-    background: rgba(1, 36, 107, 0.9);
-    color: #fff;
-    border-bottom: 2px solid rgba(5, 105, 151, 0.6);
-  }
-
-  .swagger-ui .opblock-summary-path {
-    color: rgba(224, 224, 255, 0.9);
-    font-family: monospace;
-  }
-`;
-
 export default function Home() {
+  const swaggerUIConfig = {
+    defaultModelRendering: "model",
+  };
+
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      body,
+      .swagger-ui .info .title,
+      .swagger-ui .scheme-container,
+      .swagger-ui select,
+      .swagger-ui textarea,
+      .swagger-ui input[type="text"],
+      .swagger-ui input[type="email"],
+      .swagger-ui input[type="file"],
+      .swagger-ui input[type="password"],
+      .swagger-ui input[type="search"],
+      .swagger-ui textarea,
+      .swagger-ui .topbar,
+      .swagger-ui .dialog-ux .modal-ux {
+        background-color: #ffffff !important;
+      }
+
+      .swagger-ui .opblock .opblock-section-header,
+      .swagger-ui input[type="email"].invalid,
+      .swagger-ui input[type="file"].invalid,
+      .swagger-ui input[type="password"].invalid,
+      .swagger-ui input[type="search"].invalid,
+      .swagger-ui input[type="text"].invalid,
+      .swagger-ui textarea.invalid {
+        background-color: transparent;
+      }
+
+      .swagger-ui .topbar,
+      .swagger-ui .opblock .opblock-section-header,
+      .swagger-ui table thead tr td,
+      .swagger-ui table thead tr th,
+      .swagger-ui .opblock-tag,
+      .swagger-ui .dialog-ux .modal-ux,
+      .swagger-ui section.models .model-container,
+      .swagger-ui section.models.is-open h4,
+      .swagger-ui section.models,
+      .swagger-ui .dialog-ux .modal-ux-header,
+      .swagger-ui .auth-container {
+        border-color: #d1d1d1;
+      }
+
+      .swagger-ui .opblock:hover {
+        border-color: #e0e0e0;
+      }
+
+      .swagger-ui,
+      .swagger-ui .info .title,
+      .swagger-ui .scheme-container,
+      .swagger-ui .model-title,
+      .swagger-ui .opblock-summary-method,
+      .swagger-ui .opblock-summary-path,
+      .swagger-ui .response-col_status,
+      .swagger-ui label,
+      .swagger-ui .opblock-tag {
+        color: #000000 !important;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   return (
     <>
       <Head>
-        <title>VelynAPIs</title>
+        <title>VelynAPI</title>
         <meta name="title" content="VelynAPI - Documentation" />
-        <meta name="description" content="VelynAPI is a free, simple REST API created for the common good." />
-        <meta property="og:image" content="https://files.catbox.moe/962uqd.jpg" />
-      </Head>
+        <meta name="description" content="VelynApi is a free, simple REST API created by ErerexIDChx for the common good. Feel free to use it, but please avoid DDoS attacks." />
+        <meta name="keywords" content="REST API, KyuuRzy, Siputzx, Qanypaw, Nawdev, Itzpire API, free API, API documentation, bot wa, free REST API" />
+        <meta name="robots" content="index, follow" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="English, Indonesian" />
 
-      <Script
+        <meta property="og:title" content="VelynAPI - Documentation" />
+        <meta property="og:description" content="VelynApi is a free, simple REST API created by ErerexIDChx for the common good. Feel free to use it, but please avoid DDoS attacks." />
+        <meta property="og:url" content="https://kyuubeyours.us.kg" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://files.catbox.moe/962uqd.jpg" />
+
+        <meta name="twitter:title" content="VelynAPI - Documentation" />
+        <meta name="twitter:description" content="VelynApi is a free, simple REST API created by ErerexIDChx for the common good. Feel free to use it, but please avoid DDoS attacks." />
+        <meta name="twitter:image" content="https://files.catbox.moe/962uqd.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+    <Script
         id="ld-json-script"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "http://schema.org",
-            "@type": "WebSite",
-            "name": "VelynAPI",
-            "url": "https://ererexidchx.vercel.app",
-            "description": "VelynAPI is a free, simple REST API created for the common good.",
-          }),
+            __html: JSON.stringify({
+                "@context": "http://schema.org",
+                "@type": "WebSite",
+                "name": "velyn",
+                "url": "https://ererexidchx.vercel.app",
+                "description": "velyn is a free, simple REST API created by ErerexID Chx for the common good. Feel free to use it, but please avoid DDoS attacks.",
+                "sameAs": [
+                    "https://www.facebook.com/yourprofile",
+                    "https://www.twitter.com/yourprofile",
+                    "https://www.linkedin.com/in/yourprofile"
+                ]
+            })
         }}
-      />
-
-      <Container>
+    />
+      <main className={`p-6 ${inter.className}`}>
         <Analytics />
         <SpeedInsights />
-        <Card>
-          <StyledSwaggerUI spec={swaggerConfig} />
-        </Card>
-      </Container>
+        <div className="bg-white shadow-md rounded-lg p-4">
+          <SwaggerUI
+            spec={swaggerConfig}
+            {...swaggerUIConfig}
+          />
+        </div>
+      </main>
     </>
   );
 }
