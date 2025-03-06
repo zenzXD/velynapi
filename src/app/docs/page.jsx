@@ -119,30 +119,21 @@ export default function Home() {
         </div>
       </main>
 
-      <style jsx>{`
+      <style jsx>{`                 
         .container {
           width: 90%;
           max-width: 1200px;
           text-align: center;
         }
 
-        .endpoints-header {
-          margin-bottom: 20px;
-        }
-
         .total-endpoints {
           font-size: 24px;
           font-weight: bold;
-          text-align: center;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 15px;
+          margin-bottom: 20px;
         }
 
         .endpoint-count {
           background: #5a0ca3;
-          color: white;
           padding: 5px 15px;
           border-radius: 8px;
           font-size: 22px;
@@ -151,18 +142,15 @@ export default function Home() {
         .category-grid {
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 10px;
           justify-content: center;
           align-items: center;
-          margin-top: 5px;
-          margin-bottom: 0px;
         }
 
         .category-card {
-          width: 80%;
+          width: 90%;
           background: #181842;
-          padding: 14px 18px;
-          border-radius: 8px;
+          padding: 15px;
           color: white;
           font-size: 18px;
           font-weight: bold;
@@ -173,8 +161,6 @@ export default function Home() {
           justify-content: space-between;
           align-items: center;
           box-shadow: 0 4px 6px rgba(90, 12, 163, 0.4);
-          margin-top: 5px;
-          position: relative;
         }
 
         .category-card:hover {
@@ -184,17 +170,7 @@ export default function Home() {
 
         .category-card.active {
           background: #251d6d;
-          box-shadow: 0 6px 10px rgba(74, 12, 131, 0.5);
           transform: translateY(-5px);
-        }
-
-        .close-icon {
-          position: absolute;
-          left: 10px;
-          font-size: 18px;
-          font-weight: bold;
-          cursor: pointer;
-          color: purple;
         }
 
         .category-content {
@@ -202,21 +178,6 @@ export default function Home() {
           flex-direction: column;
           align-items: flex-start;
           flex-grow: 1;
-          margin-left: 15px;
-        }
-
-        .category-name {
-          font-size: 18px;
-        }
-
-        .category-endpoint-count {
-          font-size: 14px;
-          color: rgba(255, 255, 255, 0.7);
-        }
-
-        .expand-icon {
-          font-size: 16px;
-          transition: transform 0.3s ease-in-out;
         }
 
         .swagger-modal {
@@ -227,19 +188,17 @@ export default function Home() {
           width: 90%;
           max-width: 1000px;
           height: 80vh;
-          background:rgb(1, 12, 21);
-          border-radius: 15px;
+          background: rgb(1, 12, 21);
           padding: 20px;
+          z-index: 1000;
           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-          overflow-y: auto;
         }
 
         .close-modal-button {
           position: absolute;
           top: 10px;
-          left: 10px;
+          right: 10px;
           font-size: 20px;
-          font-weight: bold;
           cursor: pointer;
           color: white;
         }
