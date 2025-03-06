@@ -1152,6 +1152,71 @@
         }
       }
     },  
+  "/api/ai/saanviAI": {
+    "get": {
+      "tags": ["Chat AI"],
+      "summary": "Dapatkan respons AI dari input teks",
+      "parameters": [
+        {
+          "name": "text",
+          "in": "query",
+          "required": true,
+          "schema": { "type": "string" },
+          "description": "Teks yang dikirim ke AI"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Berhasil",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "result": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Kesalahan input",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Kesalahan server",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }, 
      "/api/ai/gemini": {
       "get": {
         "tags": ["Chat AI"],
