@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>VelynAPI</title>
+        <title>VelynAPIs</title>
         <meta name="title" content="VelynAPI - Documentation" />
         <meta name="description" content="VelynAPI is a free, simple REST API created for the common good." />
         <meta property="og:image" content="https://files.catbox.moe/962uqd.jpg" />
