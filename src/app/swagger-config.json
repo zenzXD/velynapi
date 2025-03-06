@@ -619,6 +619,94 @@
     }
   }
 },
+    "/api/maker/ttp": {
+  "get": {
+    "tags": ["Maker"],
+    "summary": "Membuat teks menjadi gambar dengan efek transparan",
+    "parameters": [
+      {
+        "name": "text",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Teks yang akan diubah menjadi gambar"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success - Gambar berhasil dibuat",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "image": { "type": "string", "format": "uri" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'text' wajib diisi",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized - API Key tidak valid atau tidak disertakan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error - Kesalahan pada server",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}, 
     "/api/search/an1": {
   "get": {
     "tags": ["Search"],
