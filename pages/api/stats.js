@@ -1,4 +1,4 @@
-import [ getAllRequestCounts } from "../../../redis";
+import { getAllRequestCounts } from "../../../redis";
 import { API_KEY, CREATOR } from "../../../settings";
 
 export default async function handler(req, res) {
