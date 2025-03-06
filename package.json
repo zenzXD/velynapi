@@ -42,12 +42,14 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.5.0",
+    "styled-components": "^6.1.5",
     "swagger-ui-react": "^5.18.3",
     "yargs": "^17.2.1",
     "yt-search": "*"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
+    "babel-plugin-styled-components": "^2.1.4", 
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "postcss": "^8.5.3",
