@@ -673,6 +673,135 @@
     }
   }      
 },
+"/api/search/imdb": {
+  "get": {
+    "tags": ["Search"],
+    "summary": "Mencari film di IMDb berdasarkan judul",
+    "parameters": [
+      {
+        "name": "query",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Judul film yang ingin dicari"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "title": { "type": "string" },
+                    "year": { "type": "string" },
+                    "rated": { "type": "string" },
+                    "released": { "type": "string" },
+                    "runtime": { "type": "string" },
+                    "genre": { "type": "string" },
+                    "director": { "type": "string" },
+                    "writer": { "type": "string" },
+                    "actors": { "type": "string" },
+                    "plot": { "type": "string" },
+                    "language": { "type": "string" },
+                    "country": { "type": "string" },
+                    "awards": { "type": "string" },
+                    "poster": { "type": "string", "format": "uri" },
+                    "ratings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": { "type": "string" },
+                          "value": { "type": "string" }
+                        }
+                      }
+                    },
+                    "imdbRating": { "type": "string" },
+                    "imdbVotes": { "type": "string" },
+                    "imdbID": { "type": "string" },
+                    "type": { "type": "string" },
+                    "boxOffice": { "type": "string" },
+                    "production": { "type": "string" },
+                    "website": { "type": "string", "format": "uri" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'query' tidak boleh kosong",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized - API Key salah atau tidak disertakan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not Found - Film tidak ditemukan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error - Terjadi kesalahan pada server",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}, 
 "/api/search/goodDreamer": {
     "get": {
       "tags": ["Search"],
