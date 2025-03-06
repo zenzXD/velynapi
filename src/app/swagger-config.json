@@ -2103,6 +2103,20 @@
         }
       }
     },
+"/api/stats": {
+  "get": {
+    "tags": ["Owner"], 
+    "description": "API Request stats", 
+    "responses": {
+      "200": {
+         "description": "Succes"
+      }, 
+      "401": {
+         "description": "Unauthorized"
+      }
+    }
+  }
+}, 
 "/api/owner/addapikey": {
   "get": {
     "tags": ["Owner"],
