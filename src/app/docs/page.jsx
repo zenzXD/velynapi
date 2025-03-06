@@ -151,6 +151,7 @@ export default function Home() {
           width: 90%;
           background: #181842;
           padding: 15px;
+          border-radius: 8px;
           color: white;
           font-size: 18px;
           font-weight: bold;
@@ -189,6 +190,7 @@ export default function Home() {
           max-width: 1000px;
           height: 80vh;
           background: rgb(1, 12, 21);
+          border-radius: 15px;
           padding: 20px;
           z-index: 1000;
           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
