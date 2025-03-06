@@ -218,47 +218,57 @@ export default function Home() {
         }
 
         .swagger-ui .opblock {
-          border-radius: 12px !important;
-          margin-bottom: 16px !important;
-          overflow: hidden !important;
-          box-shadow: 0 4px 6px rgb(5, 105, 151) !important;
-          transition: all 0.3s ease !important;
-        }
+  border-radius: 12px !important;
+  margin-bottom: 16px !important;
+  overflow: hidden !important;
+  border: 2px solid rgba(5, 105, 151, 0.5) !important;
+  box-shadow: 0 4px 6px rgba(5, 105, 151, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
 
-        .swagger-ui .opblock:hover {
-          transform: translateY(-3px) !important;
-          box-shadow: 0 6px 12px rgba(11, 117, 153, 0.89) !important;
-        }
+.swagger-ui .opblock:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 12px rgba(11, 117, 153, 0.7) !important;
+}
 
-        .swagger-ui .opblock-summary {
-          padding: 12px 16px !important;
-          background: rgba(1, 36, 107, 0.99) !important;
-        }
+.swagger-ui .opblock-summary {
+  padding: 12px 16px !important;
+  background: rgba(1, 36, 107, 0.9) !important;
+  border-bottom: 2px solid rgba(5, 105, 151, 0.6) !important;
+}
 
-        .swagger-ui .opblock-summary-method {
-          border-radius: 6px !important;
-          font-weight: bold !important;
-          padding: 6px 12px !important;
-          text-transform: uppercase !important;
-          letter-spacing: 1px !important;
-        }
+.swagger-ui .opblock-summary-method {
+  border-radius: 6px !important;
+  font-weight: bold !important;
+  padding: 6px 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
 
-        .swagger-ui .opblock-summary-method-get {
-          background: rgba(14, 68, 128, 0.46) !important;
-          color:rgb(184, 197, 213) !important;
-          border: 1px solid rgba(74, 144, 226, 0.5) !important;
-        }
+.swagger-ui .opblock-summary-path {
+  color: rgba(224, 224, 255, 0.9) !important;
+  font-family: monospace !important;
+}
 
-        .swagger-ui .opblock-summary-method-post {
-          background: rgba(46, 204, 113, 0.2) !important;
-          color: #2ecc71 !important;
-          border: 1px solid rgba(46, 204, 113, 0.5) !important;
-        }
+.swagger-ui .try-out {
+  background: rgba(14, 68, 128, 0.6) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
 
-        .swagger-ui .opblock-summary-path {
-          color: rgba(224, 224, 255, 0.7) !important;
-          font-family: 'monospace' !important;
-        }
+.swagger-ui .try-out:hover {
+  background: rgba(14, 68, 128, 0.8) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.swagger-ui .opblock-body {
+  max-height: 500px !important;
+  overflow-y: auto !important;
+  padding: 10px !important;
+  background: rgba(1, 12, 21, 0.8) !important;
+}
 
         .swagger-ui .btn {
           background:rgb(29, 12, 46) !important;
