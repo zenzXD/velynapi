@@ -23,14 +23,11 @@ export default async function handler(req, res) {
     }
 
     try {
-        const filePath = await txt2img(prompt);
+        const imageBuffer = await txt2img(prompt);
 
-        res.status(200).json({
-            status: true,
-            creator: CREATOR,
-            message: "Image successfully generated.",
-            image_path: filePath,
-        });
+        // Kirim gambar langsung sebagai respons
+        res.setHeader("Content-Type", "image/jpeg");
+        res.send(imageBuffer);
     } catch (error) {
         console.error("Error generating image:", error.message);
         res.status(500).json({
@@ -51,17 +48,10 @@ async function txt2img(prompt) {
         const { data } = await axios.post(
             "https://ai.clauodflare.workers.dev/image-generation",
             payload,
-            { responseType: "arraybuffer" }
+            { responseType: "arraybuffer" } 
         );
 
-        // Tentukan path penyimpanan file yang lebih aman
-        const fileName = `result_${Date.now()}.jpg`;
-        const savePath = path.join(process.cwd(), "public", "images", fileName);
-
-        // Simpan file secara asinkron
-        await fs.promises.writeFile(savePath, data);
-
-        return `/public/${fileName}`;
+        return data; 
     } catch (error) {
         console.error("Failed to generate image:", error.response?.data || error.message);
         throw new Error("Image generation failed.");
