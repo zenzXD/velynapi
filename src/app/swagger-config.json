@@ -1286,8 +1286,8 @@
           }
         }
       }
-  },
-  "/api/ai/text2img": {
+  },               
+"/api/ai/text2img": {
   "get": {
     "tags": ["AI Generator"],
     "summary": "Menghasilkan gambar dari teks menggunakan AI",
@@ -1321,15 +1321,10 @@
       "200": {
         "description": "Success - Gambar berhasil dihasilkan",
         "content": {
-          "application/json": {
+          "image/jpeg": {
             "schema": {
-              "type": "object",
-              "properties": {
-                "status": { "type": "boolean" },
-                "creator": { "type": "string" },
-                "input": { "type": "string" },
-                "image_path": { "type": "string" }
-              }
+              "type": "string",
+              "format": "binary"
             }
           }
         }
