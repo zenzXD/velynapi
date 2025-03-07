@@ -1290,11 +1290,13 @@
   "/api/ai/text2img": {
   "get": {
     "tags": ["AI Generator"],
-     "security": [
-     {
-     "ApiKeyAuth": []
-     }
-     ],
+    "summary": "Menghasilkan gambar dari teks menggunakan AI",
+    "description": "Endpoint ini menghasilkan gambar berdasarkan deskripsi teks yang diberikan.",
+    "security": [
+      {
+        "ApiKeyAuth": []
+      }
+    ],
     "parameters": [
       {
         "name": "prompt",
@@ -1306,47 +1308,95 @@
         "description": "Deskripsi gambar yang ingin dihasilkan oleh AI"
       },
       {
-            "name": "apikey",
-            "in": "query",
+        "name": "apikey",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "API key yang diperlukan untuk mengakses endpoint ini"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success - Gambar berhasil dihasilkan",
+        "content": {
+          "application/json": {
             "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "API key yang diperlukan untuk akses"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": { "type": "boolean" },
-                    "creator": { "type": "string" },
-                    "input": { "type": "string" },
-                    "output": { "type": "string" }
-                  }
-                }
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "input": { "type": "string" },
+                "image_path": { "type": "string" }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request - Parameter 'url' tidak boleh kosong"
-          },
-          "401": {
-            "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
-          },
-          "403": {
-            "description": "Forbidden - API Key tidak memiliki akses"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'prompt' tidak boleh kosong",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized - API Key tidak valid atau tidak diberikan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Forbidden - API Key tidak memiliki akses",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
           }
         }
       }
-  },
+    }
+  }
+}, 
      "/api/ai/simi": {
       "get": {
         "tags": ["Chat AI"],
