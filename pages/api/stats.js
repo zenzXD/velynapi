@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         res.status(200).json({
             status: true,
             creator: CREATOR,
-            data: data,
+            totalRequest
         });
     } catch (error) {
         console.error(error);
