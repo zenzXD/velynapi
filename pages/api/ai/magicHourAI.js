@@ -22,21 +22,24 @@ export default async function handler(req, res) {
     }
 
     try {
-        const imageBuffer = await text2image(prompt);
+        const imageUrl = await text2image(prompt);
 
-        if (!imageBuffer) {
+        if (!imageUrl) {
             return res.status(500).json({
                 status: false,
                 creator: CREATOR,
-                error: "Failed to retrieve image",
+                error: "Failed to retrieve image URL",
             });
         }
 
-        res.setHeader("Content-Type", "image/jpeg");
-        res.send(imageBuffer);
+        return res.status(200).json({
+            status: true,
+            creator: CREATOR,
+            image_url: imageUrl,
+        });
     } catch (error) {
         console.error("Error generating image:", error.message);
-        res.status(500).json({
+        return res.status(500).json({
             status: false,
             creator: CREATOR,
             error: "Internal Server Error",
@@ -46,8 +49,8 @@ export default async function handler(req, res) {
 
 async function text2image(prompt) {
     try {
-        const taskId = uuidv4();
-        const payload = {
+        let taskId = uuidv4();
+        let payload = {
             orientation: "square",
             prompt: prompt,
             task_id: taskId,
@@ -55,34 +58,25 @@ async function text2image(prompt) {
 
         await axios.post("https://magichour.ai/api/free-tools/v1/ai-image-generator", payload);
 
-        let result = null;
-        let retries = 15; // Batas retry agar tidak infinite loop
-        let delay = 2000; // 2 detik
+        let result;
+        let retries = 10; // Kurangi retries agar tidak menyebabkan timeout
 
-        while (retries > 0) {
-            await new Promise((resolve) => setTimeout(resolve, delay));
-
-            const res = await axios.get(`https://magichour.ai/api/free-tools/v1/ai-image-generator/${taskId}/status`);
-            result = res.data;
-
-            if (result.status === "SUCCESS" && result.image_url) {
-                break;
+        do {
+            if (retries-- <= 0) {
+                throw new Error("Timeout: Image generation took too long");
             }
 
-            retries--;
+            await new Promise((resolve) => setTimeout(resolve, 1500)); // Percepat polling interval
+            let res = await axios.get(`https://magichour.ai/api/free-tools/v1/ai-image-generator/${taskId}/status`);
+            result = res.data;
+        } while (result.status !== "SUCCESS");
+
+        if (!result.image_url) {
+            throw new Error("Image URL not found in response");
         }
 
-        if (!result || result.status !== "SUCCESS" || !result.image_url) {
-            throw new Error("Image URL not found or generation failed");
-        }
-
-        // Unduh gambar sebagai buffer
-        const imageResponse = await axios.get(result.image_url, {
-            responseType: "arraybuffer",
-        });
-
-        return imageResponse.data;
+        return result.image_url;
     } catch (error) {
         throw new Error(`Gagal menghasilkan gambar: ${error.message}`);
     }
-}
+ }
