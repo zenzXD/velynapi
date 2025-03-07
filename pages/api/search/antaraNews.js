@@ -19,7 +19,7 @@ export default async function handler(req, res) {
             return res.status(200).json({
                 status: true,
                 creator: CREATOR,
-                data: data,
+                data,
             });
         }
 
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
             return res.status(200).json({
                 status: true,
                 creator: CREATOR,
-                data: data,
+                data,
             });
         }
 
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
         return res.status(200).json({
             status: true,
             creator: CREATOR,
-            data: data,
+            data,
         });
     } catch (error) {
         console.error(error);
@@ -60,7 +60,7 @@ async function requestAntara(url) {
         return cheerio.load(data);
     } catch (error) {
         console.error("Error fetching the URL:", error.message);
-        throw error;
+        throw new Error("Failed to fetch data from Antara News");
     }
 }
 
@@ -69,10 +69,13 @@ async function getLatestNews() {
     let result = [];
 
     $(".wrapper__list__article .mb-3").each((i, e) => {
-        let title = $(e).find(".card__post__title").text().trim();
-        let uploaded = $(e).find(".list-inline-item").text().trim();
+        const title = $(e).find(".card__post__title").text().trim() || "No Title";
+        const uploaded = $(e).find(".list-inline-item").text().trim() || "Unknown Date";
         let url = $(e).find(".card__post__title a").attr("href");
-        let img = $(e).find("img").attr("data-src") || "default-image.jpg";
+        const img = $(e).find("img").attr("data-src") || $(e).find("img").attr("src") || "default-image.jpg";
+
+        if (url && !url.startsWith("http")) url = `https://www.antaranews.com${url}`;
+
         result.push({ title, uploaded, url, img });
     });
 
@@ -84,11 +87,14 @@ async function searchAntaraNews(query, page = 1) {
     let result = [];
 
     $(".wrapper__list__article .card__post").each((i, e) => {
-        let title = $(e).find("h2.h5").text().trim();
-        let uploaded = $(e).find(".list-inline-item").text().trim();
+        const title = $(e).find("h2.h5").text().trim() || "No Title";
+        const uploaded = $(e).find(".list-inline-item").text().trim() || "Unknown Date";
         let url = $(e).find("h2.h5 a").attr("href");
-        let img = $(e).find("img").attr("data-src") || "default-image.jpg";
-        let description = $(e).find("p").text().trim();
+        const img = $(e).find("img").attr("data-src") || $(e).find("img").attr("src") || "default-image.jpg";
+        const description = $(e).find("p").text().trim() || "No Description";
+
+        if (url && !url.startsWith("http")) url = `https://www.antaranews.com${url}`;
+
         result.push({ title, uploaded, url, img, description });
     });
 
@@ -97,19 +103,21 @@ async function searchAntaraNews(query, page = 1) {
 
 async function getDetailNews(url) {
     const $ = await requestAntara(url);
-    let title = $(".wrap__article-detail-title").text().trim();
-    let img = $("img.img-fluid").attr("src") || "default-image.jpg";
-    let date = $(".wrap__article-detail-info .list-inline-item").eq(0).text().trim();
-    let readDuration = $(".wrap__article-detail-info .list-inline-item").eq(1).text().trim();
+    
+    const title = $(".wrap__article-detail-title").text().trim() || "No Title";
+    const img = $("img.img-fluid").attr("src") || "default-image.jpg";
+    const date = $(".wrap__article-detail-info .list-inline-item").eq(0).text().trim() || "Unknown Date";
+    const readDuration = $(".wrap__article-detail-info .list-inline-item").eq(1).text().trim() || "Unknown Duration";
     
     let tags = [];
     $(".blog-tags a").each((i, e) => {
-        tags.push({ tag: $(e).text().trim(), url: $(e).attr("href") });
+        tags.push({ tag: $(e).text().trim(), url: $(e).attr("href") || "#" });
     });
 
     let content = [];
     $(".wrap__article-detail-content p").each((i, e) => {
-        content.push($(e).text().trim());
+        const paragraph = $(e).text().trim();
+        if (paragraph) content.push(paragraph);
     });
 
     return { title, img, date, readDuration, tags, content };
