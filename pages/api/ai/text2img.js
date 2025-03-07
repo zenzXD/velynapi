@@ -61,7 +61,7 @@ async function txt2img(prompt) {
         // Simpan file secara asinkron
         await fs.promises.writeFile(savePath, data);
 
-        return `/images/${fileName}`;
+        return `/public/${fileName}`;
     } catch (error) {
         console.error("Failed to generate image:", error.response?.data || error.message);
         throw new Error("Image generation failed.");
