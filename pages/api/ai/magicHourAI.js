@@ -1,6 +1,6 @@
 import { API_KEY, CREATOR } from "../../../settings";
 import axios from "axios";
-import { v4: uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export default async function handler(req, res) {
     if (req.method !== "GET") {
