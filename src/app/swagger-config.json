@@ -707,6 +707,220 @@
     }
   }
 }, 
+      "/api/search/antaraNews": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Mencari berita di Antara News berdasarkan kata kunci",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "Kata kunci berita yang ingin dicari"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 },
+            "required": false,
+            "description": "Halaman hasil pencarian"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "creator": { "type": "string" },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": { "type": "string" },
+                          "uploaded": { "type": "string" },
+                          "url": { "type": "string", "format": "uri" },
+                          "img": { "type": "string", "format": "uri" },
+                          "description": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Parameter 'q' tidak boleh kosong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "creator": { "type": "string" },
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Terjadi kesalahan pada server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "creator": { "type": "string" },
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search/antaraDetail": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Mendapatkan detail berita berdasarkan URL",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "schema": { "type": "string", "format": "uri" },
+            "required": true,
+            "description": "URL lengkap berita Antara yang ingin diambil detailnya"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "creator": { "type": "string" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": { "type": "string" },
+                        "img": { "type": "string", "format": "uri" },
+                        "date": { "type": "string" },
+                        "readDuration": { "type": "string" },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "tag": { "type": "string" },
+                              "url": { "type": "string", "format": "uri" }
+                            }
+                          }
+                        },
+                        "content": {
+                          "type": "array",
+                          "items": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Parameter 'url' tidak boleh kosong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "creator": { "type": "string" },
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Terjadi kesalahan pada server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "creator": { "type": "string" },
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search/antaraLatest": {
+      "get": {
+        "tags": ["News"],
+        "summary": "Mendapatkan berita terbaru dari Antara News",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "creator": { "type": "string" },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": { "type": "string" },
+                          "uploaded": { "type": "string" },
+                          "url": { "type": "string", "format": "uri" },
+                          "img": { "type": "string", "format": "uri" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Terjadi kesalahan pada server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "creator": { "type": "string" },
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }, 
     "/api/search/an1": {
   "get": {
     "tags": ["Search"],
@@ -1227,6 +1441,81 @@
         }
       }
     },
+  "/api/ai/magicHourAI": {
+    "get": {
+      "tags": ["AI Generator"],
+      "summary": "Menghasilkan gambar dari teks menggunakan AI",
+      "parameters": [
+        {
+          "name": "prompt",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Deskripsi gambar yang ingin dihasilkan oleh AI"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success - Gambar berhasil dihasilkan",
+          "content": {
+            "image/jpeg": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request - Parameter 'prompt' tidak boleh kosong",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "405": {
+          "description": "Method Not Allowed - Hanya metode GET yang diizinkan",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error - Terjadi kesalahan saat memproses permintaan",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }, 
 "/api/ai/magicStudio": {
   "get": {
     "tags": ["AI Generator"],
