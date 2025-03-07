@@ -82,4 +82,3 @@ async function text2image(prompt) {
         throw new Error(`Gagal menghasilkan gambar: ${error.message}`);
     }
   }
-}
