@@ -1842,11 +1842,6 @@
       "get": {
         "tags": ["Downloader"],
         "summary": "Mendownload link url dari mediafire",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "url",
@@ -1856,15 +1851,6 @@
               "type": "string"
             },
             "description": "URL MediaFire yang akan diunduh"
-          }, 
-          {
-            "name": "apikey",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "API key yang diperlukan untuk akses"
           }
         ],
         "responses": {
@@ -1890,11 +1876,6 @@
       "get": {
         "tags": ["Downloader"],
         "summary": "Mengunduh audio dari video YouTube dalam format MP3",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "url",
@@ -1904,15 +1885,6 @@
             },
             "required": true,
             "description": "URL video YouTube yang akan diunduh sebagai MP3"
-          },
-          {
-            "name": "apikey",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "API key yang diperlukan untuk akses"
           }
         ],
         "responses": {
@@ -1951,12 +1923,6 @@
   "get": {
     "tags": ["Downloader"],
     "summary": "Mengunduh audio dari video YouTube dalam format MP3",
-    "description": "Endpoint ini digunakan untuk mengonversi video YouTube menjadi file MP3 dengan menyediakan URL video dan API key.",
-    "security": [
-      {
-        "ApiKeyAuth": []
-      }
-    ],
     "parameters": [
       {
         "name": "url",
@@ -1966,15 +1932,6 @@
         },
         "required": true,
         "description": "URL video YouTube yang akan dikonversi menjadi MP3."
-      },
-      {
-        "name": "apikey",
-        "in": "query",
-        "schema": {
-          "type": "string"
-        },
-        "required": true,
-        "description": "API key yang diperlukan untuk mengakses layanan ini."
       }
     ],
     "responses": {
