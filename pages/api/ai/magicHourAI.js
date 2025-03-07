@@ -46,8 +46,8 @@ export default async function handler(req, res) {
 
 async function text2image(prompt) {
     try {
-        let taskId = uuidv4();
-        let payload = {
+        const taskId = uuidv4();
+        const payload = {
             orientation: "square",
             prompt: prompt,
             task_id: taskId,
@@ -55,24 +55,28 @@ async function text2image(prompt) {
 
         await axios.post("https://magichour.ai/api/free-tools/v1/ai-image-generator", payload);
 
-        let result;
-        let retries = 15; // Batas retry untuk menghindari loop tak terbatas
+        let result = null;
+        let retries = 15; // Batas retry agar tidak infinite loop
+        let delay = 2000; // 2 detik
 
-        do {
-            if (retries-- <= 0) {
-                throw new Error("Timeout: Image generation took too long");
+        while (retries > 0) {
+            await new Promise((resolve) => setTimeout(resolve, delay));
+
+            const res = await axios.get(`https://magichour.ai/api/free-tools/v1/ai-image-generator/${taskId}/status`);
+            result = res.data;
+
+            if (result.status === "SUCCESS" && result.image_url) {
+                break;
             }
 
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-            let res = await axios.get(`https://magichour.ai/api/free-tools/v1/ai-image-generator/${taskId}/status`);
-            result = res.data;
-        } while (result.status !== "SUCCESS");
-
-        if (!result.image_url) {
-            throw new Error("Image URL not found in response");
+            retries--;
         }
 
-        // Mengunduh gambar sebagai buffer
+        if (!result || result.status !== "SUCCESS" || !result.image_url) {
+            throw new Error("Image URL not found or generation failed");
+        }
+
+        // Unduh gambar sebagai buffer
         const imageResponse = await axios.get(result.image_url, {
             responseType: "arraybuffer",
         });
@@ -81,4 +85,4 @@ async function text2image(prompt) {
     } catch (error) {
         throw new Error(`Gagal menghasilkan gambar: ${error.message}`);
     }
-  }
+}
