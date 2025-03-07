@@ -1442,80 +1442,83 @@
       }
     },
   "/api/ai/magicHourAI": {
-    "get": {
-      "tags": ["AI Generator"],
-      "summary": "Menghasilkan gambar dari teks menggunakan AI",
-      "parameters": [
-        {
-          "name": "prompt",
-          "in": "query",
-          "required": true,
-          "schema": {
-            "type": "string"
-          },
-          "description": "Deskripsi gambar yang ingin dihasilkan oleh AI"
+  "get": {
+    "tags": ["AI Generator"],
+    "parameters": [
+      {
+        "name": "prompt",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Deskripsi gambar yang ingin dihasilkan oleh AI"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success - URL gambar berhasil dihasilkan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "image_url": { "type": "string", "format": "uri" }
+              }
+            }
+          }
         }
-      ],
-      "responses": {
-        "200": {
-          "description": "Success - Gambar berhasil dihasilkan",
-          "content": {
-            "image/jpeg": {
-              "schema": {
-                "type": "string",
-                "format": "binary"
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'prompt' tidak boleh kosong",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
               }
             }
           }
-        },
-        "400": {
-          "description": "Bad Request - Parameter 'prompt' tidak boleh kosong",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "status": { "type": "boolean" },
-                  "creator": { "type": "string" },
-                  "error": { "type": "string" }
-                }
+        }
+      },
+      "405": {
+        "description": "Method Not Allowed - Hanya metode GET yang diizinkan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
               }
             }
           }
-        },
-        "405": {
-          "description": "Method Not Allowed - Hanya metode GET yang diizinkan",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "status": { "type": "boolean" },
-                  "creator": { "type": "string" },
-                  "error": { "type": "string" }
-                }
-              }
-            }
-          }
-        },
-        "500": {
-          "description": "Internal Server Error - Terjadi kesalahan saat memproses permintaan",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "status": { "type": "boolean" },
-                  "creator": { "type": "string" },
-                  "error": { "type": "string" }
-                }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error - Terjadi kesalahan saat memproses permintaan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
               }
             }
           }
         }
       }
     }
-  }, 
+  }
+}, 
 "/api/ai/magicStudio": {
   "get": {
     "tags": ["AI Generator"],
