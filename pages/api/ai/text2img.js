@@ -1,5 +1,7 @@
-import { CREATOR } from "../../../settings";
-import axios from 'axios';
+import { API_KEY, CREATOR } from "../../../settings";
+import axios from "axios";
+import fs from "fs";
+import path from "path";
 
 export default async function handler(req, res) {
     if (req.method !== "GET") {
@@ -21,21 +23,16 @@ export default async function handler(req, res) {
     }
 
     try {
-        const imageBuffer = await text2img(prompt);
+        const filePath = await txt2img(prompt);
 
-        if (!imageBuffer) {
-            return res.status(500).json({
-                status: false,
-                creator: CREATOR,
-                error: "Failed to generate image",
-            });
-        }
-
-        res.setHeader("Content-Type", "image/png");
-        res.setHeader("Content-Length", imageBuffer.length);
-        res.status(200).send(imageBuffer);
+        res.status(200).json({
+            status: true,
+            creator: CREATOR,
+            message: "Image successfully generated.",
+            image_path: filePath,
+        });
     } catch (error) {
-        console.error(error);
+        console.error("Error generating image:", error.message);
         res.status(500).json({
             status: false,
             creator: CREATOR,
@@ -44,32 +41,29 @@ export default async function handler(req, res) {
     }
 }
 
-async function text2img(prompt, size = 512) {
+async function txt2img(prompt) {
+    const payload = {
+        model: "@cf/black-forest-labs/flux-1-schnell",
+        prompt: prompt,
+    };
+
     try {
         const { data } = await axios.post(
-            'https://ftvwohriusaknrzfogjh.supabase.co/functions/v1/generate-image',
-            {
-                "prompt": `${prompt}, professional photograph, raw photo, unedited photography, photorealistic, 8k uhd, high quality dslr photo, sharp focus, detailed, crystal clear, natural lighting`,
-                "width": size,
-                "height": size
-            },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dndvaHJpdXNha25yemZvZ2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQzNDc1NDMsImV4cCI6MjA0OTkyMzU0M30.JXPW9daK9AEov4sOt83qOgvx43-hE6QYfdO0h-nUHSs",
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0dndvaHJpdXNha25yemZvZ2poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQzNDc1NDMsImV4cCI6MjA0OTkyMzU0M30.JXPW9daK9AEov4sOt83qOgvx43-hE6QYfdO0h-nUHSs"
-                }
-            }
+            "https://ai.clauodflare.workers.dev/image-generation",
+            payload,
+            { responseType: "arraybuffer" }
         );
 
-        if (!data.image) {
-            throw new Error("Image data not found");
-        }
+        // Tentukan path penyimpanan file yang lebih aman
+        const fileName = `result_${Date.now()}.jpg`;
+        const savePath = path.join(process.cwd(), "public", "images", fileName);
 
-        let base64Image = data.image.replace(/^data:image\/[a-zA-Z]+;base64,/, '');
-        return Buffer.from(base64Image, 'base64');
+        // Simpan file secara asinkron
+        await fs.promises.writeFile(savePath, data);
+
+        return `/images/${fileName}`;
     } catch (error) {
-        console.error("Error generating image:", error.message);
-        return null;
+        console.error("Failed to generate image:", error.response?.data || error.message);
+        throw new Error("Image generation failed.");
     }
 }
