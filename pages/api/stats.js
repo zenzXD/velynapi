@@ -13,8 +13,20 @@ export default async function handler(req, res) {
     try {
         await trackRequest("/api/stats");
         await trackRequest("/api/ai/saanviAI");
+        await trackRequest("/api/ai/openai");
+        await trackRequest("/api/ai/gemini");
+        await trackRequest("/api/ai/deepseek-r1");
         await trackRequest("/api/ai/magicStudio");
+        await trackRequest("/api/ai/text2img");
         await trackRequest("/api/downloader/instagram");
+        await trackRequest("/api/downloader/tiktok");
+        await trackRequest("/api/downloader/twitter");
+        await trackRequest("/api/downloader/soundCloud");
+        await trackRequest("/api/downloader/spotifydl");
+        await trackRequest("/api/downloader/snackVideo");
+        await trackRequest("/api/downloader/mediafire");
+        await trackRequest("/api/downloader/ytmp3");
+        await trackRequest("/api/downloader/ytmp4");
 
         const totalRequest = await getAllRequestCounts();
 
