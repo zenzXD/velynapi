@@ -12,6 +12,9 @@ export default async function handler(req, res) {
 
     try {
         await trackRequest("/api/stats");
+        await trackRequest("/api/ai/saanviAI");
+        await trackRequest("/api/ai/magicStudio");
+        await trackRequest("/api/downloader/instagram");
 
         const totalRequest = await getAllRequestCounts();
 
