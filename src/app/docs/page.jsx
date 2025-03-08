@@ -47,11 +47,16 @@ export default function Home() {
         text-decoration: none;
       }
 
+      /* Styling endpoint container */
       .swagger-ui .opblock {
         border-radius: 8px;
         border: 1px solid #ddd;
         margin-bottom: 10px;
         transition: all 0.3s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
       }
 
       .swagger-ui .opblock:hover {
@@ -66,40 +71,65 @@ export default function Home() {
         padding-left: 10px;
       }
 
-      .swagger-ui .opblock-summary {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        font-weight: bold;
-      }
-
+      /* Styling untuk tombol metode HTTP */
       .swagger-ui .opblock-summary-method {
-        border-radius: 5px;
+        border-radius: 20px;
         font-size: 14px;
         font-weight: bold;
         padding: 6px 12px;
         min-width: 60px;
         text-align: center;
+        margin-right: 10px;
       }
 
       .swagger-ui .opblock-summary-method-get {
-        background-color: #007bff;
-        color: white;
+        background-color: #007bff !important;
+        color: white !important;
       }
 
       .swagger-ui .opblock-summary-method-post {
-        background-color: #28a745;
-        color: white;
+        background-color: #28a745 !important;
+        color: white !important;
       }
 
+      /* Styling untuk nama endpoint */
       .swagger-ui .opblock-summary-path {
-        font-size: 14px;
+        font-size: 16px;
+        font-weight: bold;
         color: #222;
+        flex-grow: 1;
+        text-align: left;
       }
 
+      /* Styling untuk tombol Try */
       .swagger-ui .opblock-summary-control {
         margin-left: auto;
+      }
+
+      .swagger-ui .try-out {
+        background-color: #007bff !important;
+        color: white !important;
+        font-weight: bold !important;
+        padding: 6px 12px !important;
+        border-radius: 20px !important;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .swagger-ui .try-out:hover {
+        background-color: #0056b3 !important;
+      }
+
+      /* Menyesuaikan input form agar tetap terlihat setelah eksekusi API */
+      .swagger-ui .opblock .execute-wrapper {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .swagger-ui .opblock .execute-wrapper input,
+      .swagger-ui .opblock .execute-wrapper select {
+        border-radius: 5px;
+        padding: 6px;
+        border: 1px solid #ccc;
       }
     `;
     document.head.appendChild(style);
