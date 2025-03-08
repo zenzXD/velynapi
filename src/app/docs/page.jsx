@@ -1,5 +1,6 @@
 "use client";
 import Head from "next/head";
+import Script from "next/script";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -15,116 +16,64 @@ export default function Home() {
     const style = document.createElement("style");
     style.innerHTML = `
       body {
-        background-color: #f9f9f9;
+        background-color: #ffffff;
         font-family: 'Inter', sans-serif;
       }
 
-      .container {
-        max-width: 900px;
-        margin: 20px auto;
-        padding: 20px;
-        background: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-      }
-
-      .swagger-ui .opblock {
-        border-radius: 8px;
+      .swagger-ui .info .title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #000;
         margin-bottom: 10px;
       }
 
-      .swagger-ui .opblock-summary-method {
-        background-color: #444 !important;
-        color: white !important;
-        border-radius: 5px;
-        padding: 5px 10px;
-      }
-
-      .swagger-ui .opblock-summary-control {
-        background-color: #1e90ff !important;
-        color: white !important;
-        border-radius: 5px;
-        padding: 5px 10px;
-      }
-
-      .title {
+      .swagger-ui .info {
         text-align: center;
-        font-size: 24px;
+      }
+
+      .swagger-ui .opblock {
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 12px;
+      }
+
+      .swagger-ui .opblock .opblock-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8f8f8;
+        padding: 10px 15px;
+        border-radius: 10px;
+      }
+
+      .swagger-ui .opblock-summary-method {
+        background: #444;
+        color: white;
         font-weight: bold;
-        margin-bottom: 20px;
-      }
-
-      /* Styling untuk input agar tetap terlihat */
-      .swagger-ui .opblock .opblock-section {
-        display: block !important;
-      }
-
-      .swagger-ui .opblock .parameters-container {
-        display: block !important;
-        background: #f5f5f5;
-        padding: 15px;
-        border-radius: 5px;
-      }
-
-      .swagger-ui .execute-wrapper {
-        margin-top: 10px;
-      }
-
-      .swagger-ui .response {
-        margin-top: 15px;
-        background: #eef6ff;
-        padding: 10px;
-        border-radius: 5px;
-      }
-
-      /* Style tambahan untuk input */
-      .swagger-ui input[type="text"],
-      .swagger-ui input[type="email"],
-      .swagger-ui input[type="file"],
-      .swagger-ui input[type="password"],
-      .swagger-ui input[type="search"],
-      .swagger-ui textarea {
-        width: 100%;
-        padding: 10px;
-        margin: 5px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-      }
-
-      .swagger-ui input:focus,
-      .swagger-ui textarea:focus {
-        border-color: #1e90ff;
-        outline: none;
-        box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
-      }
-
-      .swagger-ui .btn.execute {
-        background-color: #1e90ff !important;
-        color: white !important;
-        border-radius: 5px;
         padding: 8px 15px;
-        font-size: 14px;
-        cursor: pointer;
-        border: none;
+        border-radius: 8px;
       }
 
-      .swagger-ui .btn.execute:hover {
-        background-color: #0078e7 !important;
+      .swagger-ui .opblock-summary-description {
+        flex-grow: 1;
+        margin-left: 10px;
+        font-size: 16px;
       }
 
-      .swagger-ui .btn.cancel {
-        background-color: #ff4d4d !important;
-        color: white !important;
-        border-radius: 5px;
-        padding: 8px 15px;
-        font-size: 14px;
-        cursor: pointer;
-        border: none;
+      .swagger-ui .try-out {
+        background: #3498db;
+        color: white;
+        font-weight: bold;
+        padding: 8px 12px;
+        border-radius: 8px;
       }
 
-      .swagger-ui .btn.cancel:hover {
-        background-color: #cc0000 !important;
+      .swagger-ui .opblock:hover {
+        border-color: #ddd;
+      }
+
+      .swagger-ui .scheme-container {
+        display: none;
       }
     `;
     document.head.appendChild(style);
@@ -137,16 +86,25 @@ export default function Home() {
     <>
       <Head>
         <title>VelynAPI</title>
-        <meta name="title" content="VelynAPI - Documentation" />
-        <meta name="description" content="VelynAPI is a free and simple REST API for developers." />
+        <meta name="description" content="Dokumentasi API Velyn yang responsif dan modern." />
       </Head>
-
+      <Script
+        id="ld-json-script"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "WebSite",
+            "name": " VelynAPI",
+            "url": "https://velyn.vercel.app",
+            "description": "Dokumentasi API Velyn dengan tampilan modern dan mudah digunakan.",
+          }),
+        }}
+      />
       <main className={`p-6 ${inter.className}`}>
         <Analytics />
         <SpeedInsights />
-        
-        <div className="container">
-          <h1 className="title">SazxOfficial API</h1>
+        <div className="bg-white shadow-md rounded-lg p-4">
           <SwaggerUI spec={swaggerConfig} />
         </div>
       </main>
