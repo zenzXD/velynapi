@@ -12,68 +12,94 @@ import { useEffect } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const swaggerUIConfig = {
+    defaultModelRendering: "model",
+    docExpansion: "none", // Menyembunyikan endpoint secara default agar lebih rapi
+  };
+
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
       body {
-        background-color: #ffffff;
+        background-color: #ffffff !important;
         font-family: 'Inter', sans-serif;
-      }
-
-      .swagger-ui .info .title {
-        font-size: 28px;
-        font-weight: bold;
-        color: #000;
-        margin-bottom: 10px;
       }
 
       .swagger-ui .info {
         text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .swagger-ui .info h1 {
+        font-size: 26px;
+        font-weight: bold;
+        color: #222;
+      }
+
+      .swagger-ui .info p {
+        font-size: 14px;
+        color: #555;
+      }
+
+      .swagger-ui .info a {
+        color: #007bff;
+        font-weight: bold;
+        text-decoration: none;
       }
 
       .swagger-ui .opblock {
-        border-radius: 10px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 12px;
-      }
-
-      .swagger-ui .opblock .opblock-summary {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: #f8f8f8;
-        padding: 10px 15px;
-        border-radius: 10px;
-      }
-
-      .swagger-ui .opblock-summary-method {
-        background: #444;
-        color: white;
-        font-weight: bold;
-        padding: 8px 15px;
         border-radius: 8px;
-      }
-
-      .swagger-ui .opblock-summary-description {
-        flex-grow: 1;
-        margin-left: 10px;
-        font-size: 16px;
-      }
-
-      .swagger-ui .try-out {
-        background: #3498db;
-        color: white;
-        font-weight: bold;
-        padding: 8px 12px;
-        border-radius: 8px;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        transition: all 0.3s ease-in-out;
       }
 
       .swagger-ui .opblock:hover {
-        border-color: #ddd;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
       }
 
-      .swagger-ui .scheme-container {
-        display: none;
+      .swagger-ui .opblock-tag {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+        padding-left: 10px;
+      }
+
+      .swagger-ui .opblock-summary {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      .swagger-ui .opblock-summary-method {
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 6px 12px;
+        min-width: 60px;
+        text-align: center;
+      }
+
+      .swagger-ui .opblock-summary-method-get {
+        background-color: #007bff;
+        color: white;
+      }
+
+      .swagger-ui .opblock-summary-method-post {
+        background-color: #28a745;
+        color: white;
+      }
+
+      .swagger-ui .opblock-summary-path {
+        font-size: 14px;
+        color: #222;
+      }
+
+      .swagger-ui .opblock-summary-control {
+        margin-left: auto;
       }
     `;
     document.head.appendChild(style);
@@ -85,9 +111,14 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>VelynAPI</title>
-        <meta name="description" content="Dokumentasi API Velyn yang responsif dan modern." />
+        <title>VelynAPI Documentation</title>
+        <meta name="title" content="VelynAPI - Documentation" />
+        <meta name="description" content="VelynAPI is a free, simple REST API for everyone. Enjoy using it without any cost!" />
+        <meta property="og:title" content="VelynAPI - Documentation" />
+        <meta property="og:description" content="VelynAPI is a free, simple REST API for everyone." />
+        <meta property="og:type" content="website" />
       </Head>
+
       <Script
         id="ld-json-script"
         type="application/ld+json"
@@ -95,17 +126,18 @@ export default function Home() {
           __html: JSON.stringify({
             "@context": "http://schema.org",
             "@type": "WebSite",
-            "name": " VelynAPI",
-            "url": "https://velyn.vercel.app",
-            "description": "Dokumentasi API Velyn dengan tampilan modern dan mudah digunakan.",
+            "name": "VelynAPI",
+            "url": "https://apivelyn.vercel.app",
+            "description": "VelynAPI is a free, simple REST API for everyone.",
           }),
         }}
       />
+
       <main className={`p-6 ${inter.className}`}>
         <Analytics />
         <SpeedInsights />
         <div className="bg-white shadow-md rounded-lg p-4">
-          <SwaggerUI spec={swaggerConfig} />
+          <SwaggerUI spec={swaggerConfig} {...swaggerUIConfig} />
         </div>
       </main>
     </>
