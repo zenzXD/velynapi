@@ -2434,7 +2434,7 @@
         }
       }
   },
-"/api/downloader/ytmp3v2": {
+"/api/downloader/ytmp4v2": {
   "get": {
     "tags": ["Downloader"],
     "parameters": [
