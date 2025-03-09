@@ -978,7 +978,6 @@
 "/api/search/imdb": {
   "get": {
     "tags": ["Search"],
-    "summary": "Mencari film di IMDb berdasarkan judul",
     "parameters": [
       {
         "name": "query",
@@ -1103,101 +1102,10 @@
       }
     }
   }
-}, 
-"/api/search/bstationSearch": {
-  "get": {
-    "tags": ["Search"],
-    "summary": "Search videos on Bilibili",
-    "parameters": [
-      {
-        "name": "query",
-        "in": "query",
-        "required": true,
-        "schema": { "type": "string" }
-      }
-    ],
-    "responses": {
-      "200": {
-        "description": "Success",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": { "type": "boolean" },
-                "creator": { "type": "string" },
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "title": { "type": "string" },
-                      "videoLink": { "type": "string" },
-                      "thumbnail": { "type": "string" },
-                      "views": { "type": "string" },
-                      "creatorName": { "type": "string" },
-                      "creatorLink": { "type": "string" },
-                      "duration": { "type": "string" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "400": {
-        "description": "Bad Request",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": { "type": "boolean" },
-                "creator": { "type": "string" },
-                "error": { "type": "string" }
-              }
-            }
-          }
-        }
-      },
-      "404": {
-        "description": "Not Found",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": { "type": "boolean" },
-                "creator": { "type": "string" },
-                "error": { "type": "string" }
-              }
-            }
-          }
-        }
-      },
-      "500": {
-        "description": "Internal Server Error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "status": { "type": "boolean" },
-                "creator": { "type": "string" },
-                "error": { "type": "string" }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}, 
+},                
 "/api/search/lyric": {
   "get": {
     "tags": ["Search"],
-    "summary": "Mencari lirik lagu berdasarkan kata kunci",
     "parameters": [
       {
         "name": "q",
@@ -1285,8 +1193,7 @@
 }, 
 "/api/search/goodDreamer": {
     "get": {
-      "tags": ["Search"],
-      "summary": "Mencari novel di GoodDreamer",
+      "tags": ["Search"], 
       "parameters": [
         {
           "name": "query",
@@ -1439,7 +1346,6 @@
  "/api/search/yahooimg": {
   "get": {
     "tags": ["Search"],
-    "summary": "Mencari gambar di Yahoo Image Search",
     "parameters": [
       {
         "name": "q",
