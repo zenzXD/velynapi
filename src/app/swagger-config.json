@@ -2391,7 +2391,6 @@
     "/api/downloader/ytmp3": {
       "get": {
         "tags": ["Downloader"],
-        "summary": "Mengunduh audio dari video YouTube dalam format MP3",
         "parameters": [
           {
             "name": "url",
@@ -2410,7 +2409,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
+"properties": {
                     "status": { "type": "boolean" },
                     "creator": { "type": "string" },
                     "input": { "type": "string" },
@@ -2435,16 +2434,16 @@
         }
       }
   },
-  "/api/downloader/ytmp3v2": {
+"/api/downloader/ytmp3v2": {
   "get": {
     "tags": ["Downloader"],
-    "summary": "Mengunduh audio dari video YouTube dalam format MP3",
     "parameters": [
       {
         "name": "url",
         "in": "query",
         "schema": {
-          "type": "string"
+          "type": "string",
+          "format": "uri"
         },
         "required": true,
         "description": "URL video YouTube yang akan dikonversi menjadi MP3."
@@ -2460,10 +2459,24 @@
               "properties": {
                 "status": { "type": "boolean" },
                 "creator": { "type": "string" },
-                "input": { "type": "string" },
-                "output": { "type": "string" },
-                "title": { "type": "string" },
-                "thumbnail": { "type": "string" }
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "videoId": { "type": "string" },
+                    "title": { "type": "string" },
+                    "thumbnail": { "type": "string" },
+                    "duration": { "type": "string" },
+                    "audioMp3": { "type": "string" },
+                    "uploaded": { "type": "string" },
+                    "author": {
+                      "type": "object",
+                      "properties": {
+                        "name": { "type": "string" },
+                        "url": { "type": "string" }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
