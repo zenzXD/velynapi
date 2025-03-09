@@ -10,131 +10,112 @@ export default async function handler(req, res) {
         });
     }
 
-        const { url } = req.query;
+    const { url } = req.query;
+    if (!url) {
+        return res.status(400).json({
+            status: false,
+            creator: CREATOR,
+            error: "URL parameter is required",
+        });
+    }
 
-        if (!url) {
+    try {
+        const data = await ytdlz(url);
+        if (data.error) {
             return res.status(400).json({
                 status: false,
                 creator: CREATOR,
-                error: "URL is required",
+                error: data.error,
             });
         }
+        
+        res.status(200).json({
+            status: true,
+            creator: CREATOR,
+            data,
+        });
+    } catch (error) {
+        console.error("Error fetching YouTube data:", error.message || error);
+        res.status(500).json({
+            status: false,
+            creator: CREATOR,
+            error: "Internal Server Error",
+        });
+    }
+}
 
-        try {
-            const data = await ytmp3.process(url);
-            if (!data) throw new Error("Gagal mengonversi video menjadi MP3");
+const getIdYoutube = (url) => {
+    try {
+        const urlObj = new URL(url);
+        const { hostname, pathname, searchParams } = urlObj;
 
-            res.status(200).json({
-                status: true,
-                creator: CREATOR,
-                input: url,
-                output: data.downloadUrl,
-                title: data.title,
-                thumbnail: data.thumbnail,
-            });
-        } catch (error) {
-            console.error("Error:", error);
-            res.status(500).json({
-                status: false,
-                creator: CREATOR,
-                error: `Internal Server Error: ${error.message}`,
-            });
+        if (hostname === "youtu.be") return pathname.substring(1);
+        if (hostname.includes("youtube.com")) {
+            if (pathname.startsWith("/watch") || searchParams.has("v")) {
+                return searchParams.get("v");
+            }
         }
+
+        const match = pathname.match(/\/(embed|shorts)\/([^/?]+)/);
+        if (match) return match[2];
+
+        throw new Error("Invalid YouTube URL");
+    } catch {
+        return null;
     }
-
-const GetIdYoutube = (url) => {
-  try {
-    const urlObj = new URL(url);
-    const hostname = urlObj.hostname;
-
-    if (hostname === "youtu.be") {
-      return urlObj.pathname.substring(1);
-    }
-
-    if (
-      hostname.includes("youtube.com") &&
-      (urlObj.pathname.startsWith("/watch") || urlObj.searchParams.has("v"))
-    ) {
-      return urlObj.searchParams.get("v");
-    }
-
-    const match = urlObj.pathname.match(/\/(embed|shorts)\/([^/?]+)/);
-    if (match) return match[2];
-
-    throw new Error("ID video tidak ditemukan dalam URL");
-  } catch (error) {
-    console.error("Terjadi kesalahan:", error.message);
-    return null;
-  }
 };
 
-const ytmp3 = {
-  getInfo: async (url) => {
+const ytdlz = async (urlYt) => {
+    const id = getIdYoutube(urlYt);
+    if (!id) return { error: "Invalid YouTube video ID" };
+
+    const payload = { u: id };
+    const headers = {
+        "Content-Type": "application/json",
+        "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://yt-downloaderz.com/",
+        "Origin": "https://yt-downloaderz.com/",
+        "Connection": "keep-alive",
+    };
+
     try {
-      const idYt = GetIdYoutube(url);
-      if (!idYt) throw new Error("Gagal mendapatkan ID video");
+        const { data } = await axios.post("https://dl.yt-downloaderz.com/info", payload, { headers });
 
-      const { data } = await axios.get(
-        `https://c01-h01.cdnframe.com/api/v4/info/${idYt}`
-      );
-
-      return data;
-    } catch (error) {
-      console.error("Terjadi kesalahan saat mengambil info:", error.message);
-      return null;
-    }
-  },
-
-  convert: async (token) => {
-    try {
-      const { data } = await axios.post(
-        "https://c01-h01.cdnframe.com/api/v4/convert",
-        { token },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "User-Agent":
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, seperti Gecko) Chrome/120.0.0.0 Safari/537.36",
-          },
+        if (!data || !data.basicInfo || !data.advancedInfo) {
+            return { error: "Invalid response from downloader API" };
         }
-      );
 
-      return data;
+        return {
+            basicInfo: {
+                type: data.basicInfo.type || null,
+                videoId: data.basicInfo.videoId || null,
+                url: data.basicInfo.url || null,
+                title: data.basicInfo.title || "Unknown Title",
+                description: data.basicInfo.description || "No description",
+                image: data.basicInfo.image || null,
+                thumbnail: data.basicInfo.thumbnail || null,
+                duration: data.basicInfo.duration?.timestamp || "Unknown",
+                views: data.basicInfo.views ? data.basicInfo.views.toLocaleString() : "Unknown",
+                uploaded: data.basicInfo.ago || "Unknown",
+                author: {
+                    name: data.basicInfo.author?.name || "Unknown",
+                    url: data.basicInfo.author?.url || null,
+                },
+            },
+            advancedInfo: {
+                id: data.advancedInfo.id || null,
+                title: data.advancedInfo.title || "Unknown",
+                videoMp4: data.advancedInfo.videoOptions?.mp4?.[0]?.url || null,
+                audioMp3: data.advancedInfo.audioOptions?.[0] || null,
+                image: data.advancedInfo.image || null,
+            },
+        };
     } catch (error) {
-      console.error("Terjadi kesalahan saat konversi:", error.message);
-      return null;
+        console.error("Error in ytdlz function:", error.message || error);
+        return { error: "Failed to retrieve video data" };
     }
-  },
-
-  process: async (url) => {
-    try {
-      const info = await ytmp3.getInfo(url);
-      if (!info) throw new Error("Gagal mendapatkan informasi video");
-
-      const { title, thumbnail, formats } = info;
-      if (!formats?.audio?.mp3?.length)
-        throw new Error("Format audio tidak tersedia");
-
-      const token = formats.audio.mp3[0].token;
-      const convertData = await ytmp3.convert(token);
-      if (!convertData?.id) throw new Error("Gagal melakukan konversi");
-
-      let statusData;
-      do {
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // Delay 2 detik sebelum request berikutnya
-
-        const { data } = await axios.get(
-          `https://c01-h01.cdnframe.com/api/v4/status/${convertData.id}`
-        );
-
-        statusData = data;
-        console.log(`Proses: ${statusData.progress}% - Status: ${statusData.state}`);
-      } while (!statusData.download);
-
-      return statusData;
-    } catch (error) {
-      console.error("Terjadi kesalahan saat memproses:", error.message);
-      return null;
-    }
-  },
 };
