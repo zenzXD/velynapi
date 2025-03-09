@@ -11,46 +11,53 @@ export default async function handler(req, res) {
         });
     }
 
-    const { text } = req.query;
+    const { prompt } = req.query;
 
-    if (!text) {
+    if (!prompt || prompt.trim() === "") {
         return res.status(400).json({
             status: false,
             creator: CREATOR,
-            error: "Missing 'text' parameter",
+            error: "Missing or empty 'text' parameter",
         });
     }
 
     try {
-        const data = await chatbot(text);
+        const data = await chatbot(prompt);
         res.status(200).json({
             status: true,
             creator: CREATOR,
-            data: data,
+            data,
         });
     } catch (error) {
-        console.error("Error processing request:", error.message);
+        console.error("Error processing request:", error.response?.data || error.message);
         res.status(500).json({
             status: false,
             creator: CREATOR,
             error: "Internal Server Error",
+            details: error.response?.data || error.message,
         });
     }
 }
 
 async function chatbot(ask) {
-   let d = new FormData();
-   d.append("_wpnonce", "b39f1c06da")
-   d.append("post_id", 11);
-   d.append("url", "https://chatbotai.one");
-   d.append("action", "wpaicg_chat_shortcode_message");
-   d.append("message", ask);
-   d.append("bot_id", 0)
-   let headers = {
-      headers: {
-         ...d.getHeaders()
-      }
-   }
-   let { data } = await axios.post("https://chatbotai.one/wp-admin/admin-ajax.php", d, headers)
-   return data
+    try {
+        const formData = new FormData();
+        formData.append("_wpnonce", "b39f1c06da");
+        formData.append("post_id", "11");
+        formData.append("url", "https://chatbotai.one");
+        formData.append("action", "wpaicg_chat_shortcode_message");
+        formData.append("message", ask);
+        formData.append("bot_id", "0");
+
+        const headers = {
+            ...formData.getHeaders(),
+        };
+
+        const response = await axios.post("https://chatbotai.one/wp-admin/admin-ajax.php", formData, { headers });
+
+        return response.data;
+    } catch (error) {
+        console.error("Chatbot API error:", error.response?.data || error.message);
+        throw new Error("Failed to fetch response from chatbot API");
+    }
 }
