@@ -1,5 +1,4 @@
 import { CREATOR } from "../../../settings.js";
-import axios from "axios";
 
 export default async function handler(req, res) {
     if (req.method !== "GET") {
@@ -28,15 +27,15 @@ export default async function handler(req, res) {
                 error: data.error,
             });
         }
-        
-        res.status(200).json({
+
+        return res.status(200).json({
             status: true,
             creator: CREATOR,
             data,
         });
     } catch (error) {
         console.error("Error fetching YouTube data:", error.message || error);
-        res.status(500).json({
+        return res.status(500).json({
             status: false,
             creator: CREATOR,
             error: "Internal Server Error",
@@ -44,6 +43,7 @@ export default async function handler(req, res) {
     }
 }
 
+// Fungsi untuk mendapatkan ID video dari URL YouTube
 const getIdYoutube = (url) => {
     try {
         const urlObj = new URL(url);
@@ -51,13 +51,10 @@ const getIdYoutube = (url) => {
 
         if (hostname === "youtu.be") return pathname.substring(1);
         if (hostname.includes("youtube.com")) {
-            if (pathname.startsWith("/watch") || searchParams.has("v")) {
-                return searchParams.get("v");
-            }
+            if (searchParams.has("v")) return searchParams.get("v");
+            const match = pathname.match(/\/(embed|shorts)\/([^/?]+)/);
+            if (match) return match[2];
         }
-
-        const match = pathname.match(/\/(embed|shorts)\/([^/?]+)/);
-        if (match) return match[2];
 
         throw new Error("Invalid YouTube URL");
     } catch {
@@ -65,25 +62,33 @@ const getIdYoutube = (url) => {
     }
 };
 
+// Fungsi untuk mendapatkan data YouTube
 const ytdlz = async (urlYt) => {
     const id = getIdYoutube(urlYt);
     if (!id) return { error: "Invalid YouTube video ID" };
 
-    const payload = { u: id };
+    const payload = JSON.stringify({ u: id });
     const headers = {
         "Content-Type": "application/json",
         "User-Agent":
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "application/json, text/plain, */*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "en-US,en;q=0.9",
         "Referer": "https://yt-downloaderz.com/",
         "Origin": "https://yt-downloaderz.com/",
-        "Connection": "keep-alive",
     };
 
     try {
-        const { data } = await axios.post("https://dl.yt-downloaderz.com/info", payload, { headers });
+        const response = await fetch("https://dl.yt-downloaderz.com/info", {
+            method: "POST",
+            headers,
+            body: payload,
+        });
+
+        if (!response.ok) {
+            return { error: "Failed to fetch data from downloader API" };
+        }
+
+        const data = await response.json();
 
         if (!data || !data.basicInfo || !data.advancedInfo) {
             return { error: "Invalid response from downloader API" };
@@ -118,4 +123,4 @@ const ytdlz = async (urlYt) => {
         console.error("Error in ytdlz function:", error.message || error);
         return { error: "Failed to retrieve video data" };
     }
-};
+}
