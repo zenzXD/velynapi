@@ -2044,6 +2044,53 @@
     }
   }
 },
+  "/api/ai/LilyAI": {
+  "get": {
+    "tags": ["Chat AI"],
+    "parameters": [
+      {
+        "name": "prompt",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "response": { "type": "string" },
+                    "bot_id": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request"
+      },
+      "401": {
+        "description": "Unauthorized"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+}, 
     "/api/ai/deepseek-coder-67b": {
       "get": {
         "tags": ["Chat AI"],
