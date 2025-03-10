@@ -1,5 +1,6 @@
 import axios from "axios";
 import FormData from "form-data";
+import cheerio from "cheerio";
 import { API_KEY, CREATOR } from "../../../settings";
 
 export default async function handler(req, res) {
@@ -17,20 +18,20 @@ export default async function handler(req, res) {
         return res.status(400).json({
             status: false,
             creator: CREATOR,
-            error: "Missing or empty 'text' parameter",
+            error: "Missing or empty 'prompt' parameter",
         });
     }
 
     try {
         const data = await chatbot(prompt);
-        res.status(200).json({
+        return res.status(200).json({
             status: true,
             creator: CREATOR,
             data,
         });
     } catch (error) {
         console.error("Error processing request:", error.response?.data || error.message);
-        res.status(500).json({
+        return res.status(500).json({
             status: false,
             creator: CREATOR,
             error: "Internal Server Error",
@@ -39,23 +40,42 @@ export default async function handler(req, res) {
     }
 }
 
-async function chatbot(ask) {
+async function getNonceNihSuki() {
     try {
-        const formData = new FormData();
-        formData.append("_wpnonce", "b39f1c06da");
-        formData.append("post_id", "11");
-        formData.append("url", "https://chatbotai.one");
-        formData.append("action", "wpaicg_chat_shortcode_message");
-        formData.append("message", ask);
-        formData.append("bot_id", "0");
+        const { data } = await axios.get("https://chatbotai.one");
+        const $ = cheerio.load(data);
+        const nonce = $(".wpaicg-chat-shortcode").attr("data-nonce");
+        return nonce || null;
+    } catch (error) {
+        console.error("Failed to fetch nonce:", error.response?.data || error.message);
+        return null;
+    }
+}
+
+async function chatbot(prompt) {
+    try {
+        const nonceNihSuki = await getNonceNihSuki();
+
+        if (!nonceNihSuki) {
+            throw new Error("Nonce tidak ditemukan!");
+        }
+
+        const d = new FormData();
+        d.append("_wpnonce", nonceNihSuki);
+        d.append("post_id", 11);
+        d.append("url", "https://chatbotai.one");
+        d.append("action", "wpaicg_chat_shortcode_message");
+        d.append("message", prompt);
+        d.append("bot_id", 0);
 
         const headers = {
-            ...formData.getHeaders(),
+            headers: {
+                ...d.getHeaders(),
+            },
         };
 
-        const response = await axios.post("https://chatbotai.one/wp-admin/admin-ajax.php", formData, { headers });
-
-        return response.data;
+        const { data } = await axios.post("https://chatbotai.one/wp-admin/admin-ajax.php", d, headers);
+        return data;
     } catch (error) {
         console.error("Chatbot API error:", error.response?.data || error.message);
         throw new Error("Failed to fetch response from chatbot API");
