@@ -1695,6 +1695,68 @@
     }
   }
 }, 
+  "/api/ai/logo": {
+    "get": {
+      "tags": ["AI Generator"],
+      "summary": "Generate AI Logo",
+      "security": [
+        {
+          "ApiKeyAuth": []
+        }
+      ],
+      "parameters": [
+        {
+          "name": "prompt",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Deskripsi gambar yang ingin dihasilkan oleh AI (format: 'title | slogan | idea')"
+        },
+        {
+          "name": "apikey",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "API key yang diperlukan untuk akses (bisa juga dikirim melalui header `X-API-KEY`)"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success - Mengembalikan gambar logo dalam format PNG/JPG",
+          "content": {
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/jpeg": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request - Parameter 'prompt' atau 'apikey' tidak boleh kosong"
+        },
+        "401": {
+          "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+        },
+        "403": {
+          "description": "Forbidden - API Key tidak memiliki akses"
+        },
+        "500": {
+          "description": "Internal Server Error - Terjadi kesalahan pada server"
+        }
+      }
+    }
+  }, 
 "/api/ai/magicStudio": {
   "get": {
     "tags": ["AI Generator"],
