@@ -6,7 +6,7 @@ export default async function handler(req, res) {
         return res.status(405).json({
             status: false,
             creator: CREATOR,
-            error: "Method Not Allowed",
+            error: "Method Is Not Allowed",
         });
     }
 
