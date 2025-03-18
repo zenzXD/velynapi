@@ -2418,6 +2418,87 @@
         }
       }
     },
+    "/api/downloader/douyin": {
+  "get": {
+    "tags": ["Downloader"],
+    "parameters": [
+      {
+        "name": "url",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "title": { "type": "string" },
+                    "thumbnail": { "type": "string" },
+                    "downloadLinks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "format": { "type": "string" },
+                          "url": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized"
+      },
+      "500": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+},
     "/api/downloader/snackVideo": {
       "get": {
         "tags": ["Downloader"],
