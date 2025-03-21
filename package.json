@@ -17,7 +17,7 @@
     "cheerio": "github:Tiooxy/cheerio",
     "crypto": "^1.0.1",
     "crypto-js": "latest",
-    "canvas": "^2.11.2",
+    "canvas": "npm:canvas-prebuilt"
     "eslint": "^8.57.0",
     "eslint-config-next": "13.5.6",
     "file-type": "^19.5.0",
