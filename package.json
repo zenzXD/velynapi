@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "apt-get update && apt-get install -y libpixman-1-dev libcairo2-dev",
+    "postinstall": "if [ \"$(uname -s)\" = \"Linux\" ]; then apt-get update && apt-get install -y libpixman-1-dev libcairo2-dev; fi"
   },
   "dependencies": {
     "@vercel/analytics": "*",
@@ -40,9 +40,9 @@
     "node-upload-images": "^1.0.1",
     "npm": "^10.2.5",
     "qrcode": "^1.5.4",
-    "ioredis": "latest", 
-    "puppeteer": "^21.3.8", 
-    "puppeteer-core": "^21.3.8", 
+    "ioredis": "latest",
+    "puppeteer": "^21.3.8",
+    "puppeteer-core": "^21.3.8",
     "qs": "^6.10.1",
     "react": "^18",
     "react-dom": "^18",
@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
-    "babel-plugin-styled-components": "^2.1.4", 
+    "babel-plugin-styled-components": "^2.1.4",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "postcss": "^8.5.3",
