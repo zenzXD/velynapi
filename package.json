@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "if [ \"$(uname -s)\" = \"Linux\" ]; then apt-get update && apt-get install -y libpixman-1-dev libcairo2-dev; fi"
+    "lint": "next lint"
   },
   "dependencies": {
     "@vercel/analytics": "*",
@@ -15,6 +14,7 @@
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
+    "canvas": "npm:canvas-prebuilt", 
     "cheerio": "github:Tiooxy/cheerio",
     "crypto": "^1.0.1",
     "crypto-js": "latest",
@@ -31,7 +31,6 @@
     "groq-sdk": "^0.7.0",
     "html-entities": "*",
     "install": "^0.13.0",
-    "knights-canvas": "^1.3.7-a",
     "mongoose": "^8.0.0",
     "needle": "^3.2.0",
     "next": "14.0.4",
