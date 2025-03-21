@@ -1,5 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
+import puppeteer from "puppeteer";
 import { API_KEY, CREATOR } from "../../../settings";
 
 export default async function handler(req, res) {
@@ -48,32 +49,34 @@ export default async function handler(req, res) {
 }
 
 async function ypsearch(query) {
+    const browser = await puppeteer.launch({ headless: "new" });
+    const page = await browser.newPage();
+    
     try {
         const url = `https://www.youporn.com/search/?query=${encodeURIComponent(query)}`;
-        const { data } = await axios.get(url, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
-            },
+        await page.goto(url, { waitUntil: "domcontentloaded" });
+
+        const results = await page.evaluate(() => {
+            const videos = [];
+            document.querySelectorAll(".video-box").forEach(el => {
+                const title = el.querySelector(".video-title")?.innerText.trim() || "No title";
+                const videoPath = el.querySelector("a")?.getAttribute("href");
+                const url = videoPath ? `https://www.youporn.com${videoPath}` : null;
+                const thumbnail = el.querySelector("img")?.getAttribute("data-src") || "No thumbnail";
+                const duration = el.querySelector(".video-duration")?.innerText.trim() || "Unknown";
+
+                if (url) {
+                    videos.push({ title, url, thumbnail, duration });
+                }
+            });
+            return videos;
         });
 
-        const $ = cheerio.load(data);
-        const results = [];
-
-        $(".video-box").each((_, el) => {
-            const title = $(el).find(".video-title").text().trim() || "No title available";
-            const videoPath = $(el).find("a").attr("href");
-            const url = videoPath ? `https://www.youporn.com${videoPath}` : null;
-            const thumbnail = $(el).find("img").attr("data-src") || $(el).find("img").attr("src") || null;
-            const duration = $(el).find(".video-duration").text().trim() || "Unknown";
-
-            if (url && thumbnail) {
-                results.push({ title, url, thumbnail, duration });
-            }
-        });
-
-        return results;
+        await browser.close();
+        return results.length > 0 ? results : [];
     } catch (error) {
-        console.error("YouPorn Search Error:", error.message);
-        return { error: "Failed to fetch search results." };
+        await browser.close();
+        console.error("YouPorn Scraper Error:", error);
+        return [];
     }
 }
