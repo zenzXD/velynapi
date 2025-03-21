@@ -40,6 +40,10 @@ export default async function handler(req, res) {
     }
 }
 
+function encodeUrl(url) {
+    return encodeURIComponent(url);
+}
+
 async function ypsearch(query) {
     try {
         const url = `https://www.youporn.com/search/?query=${encodeURIComponent(query)}`;
@@ -53,20 +57,19 @@ async function ypsearch(query) {
         const results = [];
 
         $(".video-box").each((i, el) => {
-            const title = $(el).find(".video-title").text().trim();
+            const title = $(el).find(".video-title").text().trim() || "No title found";
             const videoPath = $(el).find("a").attr("href");
-            const url = videoPath ? `https://www.youporn.com${videoPath}` : null;
-            const thumbnail = $(el).find("img").attr("data-src") || $(el).find("img").attr("src") || null;
-            const duration = $(el).find(".video-duration").text().trim();
+            const url = videoPath ? `https://www.youporn.com${videoPath}` : "No URL";
+            const thumbnail = $(el).find("img").attr("data-src") || $(el).find("img").attr("src") || "No thumbnail";
+            const duration = $(el).find(".video-duration").text().trim() || "No duration";
 
-            if (title && url && thumbnail && duration) {
-                results.push({ title, url, thumbnail, duration });
-            }
+            results.push({ title, url, thumbnail, duration });
         });
 
-        return results;
+        console.log(results.length > 0 ? results : "No results found");
+        return results.length > 0 ? results : [];
     } catch (error) {
-        console.error("Error fetching YouPorn search results:", error.message);
+        console.error("Error:", error.message);
         return [];
     }
 }
