@@ -1,5 +1,6 @@
-import puppeteer from "puppeteer";
-import { CREATOR } from "../../../settings";
+import axios from "axios";
+import * as cheerio from "cheerio";
+import {  CREATOR } from "../../../settings";
 
 export default async function handler(req, res) {
     if (req.method !== "GET") {
@@ -26,7 +27,7 @@ export default async function handler(req, res) {
         res.status(200).json({
             status: true,
             creator: CREATOR,
-            data,  // Menggunakan `data` sesuai Swagger
+            data,  
         });
     } catch (error) {
         console.error("YouPorn Search Error:", error);
@@ -39,34 +40,31 @@ export default async function handler(req, res) {
 }
 
 async function ypsearch(query) {
-    const browser = await puppeteer.launch({ headless: "new" });
-    const page = await browser.newPage();
-    
     try {
         const url = `https://www.youporn.com/search/?query=${encodeURIComponent(query)}`;
-        await page.goto(url, { waitUntil: "domcontentloaded" });
-
-        const results = await page.evaluate(() => {
-            const videos = [];
-            document.querySelectorAll(".video-box").forEach(el => {
-                const title = el.querySelector(".video-title")?.innerText.trim() || "No title";
-                const videoPath = el.querySelector("a")?.getAttribute("href");
-                const url = videoPath ? `https://www.youporn.com${videoPath}` : null;
-                const thumbnail = el.querySelector("img")?.getAttribute("data-src") || el.querySelector("img")?.getAttribute("src") || "No thumbnail";
-                const duration = el.querySelector(".video-duration")?.innerText.trim() || "Unknown";
-
-                if (url) {
-                    videos.push({ title, duration, thumbnail, url });
-                }
-            });
-            return videos;
+        const { data } = await axios.get(url, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+            },
         });
 
-        await browser.close();
-        return results;
+        const $ = cheerio.load(data);
+        const results = [];
+
+        $(".video-box").each((i, el) => {
+            const title = $(el).find(".video-title").text().trim() || "No title found";
+            const videoPath = $(el).find("a").attr("href");
+            const url = videoPath ? `https://www.youporn.com${videoPath}` : "No URL";
+            const thumbnail = $(el).find("img").attr("data-src") || $(el).find("img").attr("src") || "No thumbnail";
+            const duration = $(el).find(".video-duration").text().trim() || "No duration";
+
+            results.push({ title, url, thumbnail, duration });
+        });
+
+        console.log(results.length > 0 ? results : "No results found");
+        return results.length > 0 ? results : [];
     } catch (error) {
-        await browser.close();
-        console.error("YouPorn Scraper Error:", error);
+        console.error("Error:", error.message);
         return [];
     }
-  }
+}
