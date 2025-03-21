@@ -921,6 +921,97 @@
         }
       }
     }, 
+  "/api/search/pornsearch": {
+    "get": {
+      "tags": ["Search"],
+      "summary": "Mencari video di YouPorn",
+      "description": "Mengambil daftar video berdasarkan kata kunci pencarian dari YouPorn.",
+      "parameters": [
+        {
+          "name": "query",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "Kata kunci untuk mencari video di YouPorn"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Berhasil mendapatkan hasil pencarian",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": { "type": "string" },
+                        "duration": { "type": "string" },
+                        "thumbnail": { "type": "string", "format": "uri" },
+                        "url": { "type": "string", "format": "uri" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request - Parameter 'query' tidak boleh kosong",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized - API key atau akses tidak valid",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error - Gagal mengambil data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }, 
     "/api/search/an1": {
   "get": {
     "tags": ["Search"],
