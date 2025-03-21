@@ -1,5 +1,5 @@
 import { CREATOR } from "../../../settings.js";
-import { createCanvas, registerFont } from "canvas";
+import { createCanvas, registerFont } from "@napi-rs/canvas";
 import axios from "axios";
 import fs from "fs/promises";
 import path from "path";
