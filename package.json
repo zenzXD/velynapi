@@ -39,6 +39,8 @@
     "npm": "^10.2.5",
     "qrcode": "^1.5.4",
     "ioredis": "latest", 
+    "puppeteer": "^21.3.8", 
+    "puppeteer-core": "^21.3.8", 
     "qs": "^6.10.1",
     "react": "^18",
     "react-dom": "^18",
