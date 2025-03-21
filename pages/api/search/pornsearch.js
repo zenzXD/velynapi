@@ -1,6 +1,6 @@
 import axios from "axios";
-import * as cheerio from "cheerio";
-import {  CREATOR } from "../../../settings";
+import cheerio from "cheerio";
+import { CREATOR } from "../../../settings";
 
 export default async function handler(req, res) {
     if (req.method !== "GET") {
@@ -11,13 +11,13 @@ export default async function handler(req, res) {
         });
     }
 
-    const { query } = req.query;
+    let { query } = req.query;
 
-    if (!query || query.trim().length === 0) {
+    if (typeof query !== "string" || query.trim().length === 0) {
         return res.status(400).json({
             status: false,
             creator: CREATOR,
-            error: "Query parameter is required.",
+            error: "Query parameter is required and must be a non-empty string.",
         });
     }
 
@@ -27,14 +27,15 @@ export default async function handler(req, res) {
         res.status(200).json({
             status: true,
             creator: CREATOR,
-            data,  
+            total_results: data.length,
+            data,
         });
     } catch (error) {
         console.error("YouPorn Search Error:", error);
         res.status(500).json({
             status: false,
             creator: CREATOR,
-            error: "Internal server error.",
+            error: "Internal server error. Please try again later.",
         });
     }
 }
@@ -52,19 +53,20 @@ async function ypsearch(query) {
         const results = [];
 
         $(".video-box").each((i, el) => {
-            const title = $(el).find(".video-title").text().trim() || "No title found";
+            const title = $(el).find(".video-title").text().trim();
             const videoPath = $(el).find("a").attr("href");
-            const url = videoPath ? `https://www.youporn.com${videoPath}` : "No URL";
-            const thumbnail = $(el).find("img").attr("data-src") || $(el).find("img").attr("src") || "No thumbnail";
-            const duration = $(el).find(".video-duration").text().trim() || "No duration";
+            const url = videoPath ? `https://www.youporn.com${videoPath}` : null;
+            const thumbnail = $(el).find("img").attr("data-src") || $(el).find("img").attr("src") || null;
+            const duration = $(el).find(".video-duration").text().trim();
 
-            results.push({ title, url, thumbnail, duration });
+            if (title && url && thumbnail && duration) {
+                results.push({ title, url, thumbnail, duration });
+            }
         });
 
-        console.log(results.length > 0 ? results : "No results found");
-        return results.length > 0 ? results : [];
+        return results;
     } catch (error) {
-        console.error("Error:", error.message);
+        console.error("Error fetching YouPorn search results:", error.message);
         return [];
     }
 }
