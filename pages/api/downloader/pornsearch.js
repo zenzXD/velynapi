@@ -1,7 +1,5 @@
-import axios from "axios";
-import cheerio from "cheerio";
 import puppeteer from "puppeteer";
-import { API_KEY, CREATOR } from "../../../settings";
+import { CREATOR } from "../../../settings";
 
 export default async function handler(req, res) {
     if (req.method !== "GET") {
@@ -25,18 +23,10 @@ export default async function handler(req, res) {
     try {
         const data = await ypsearch(query);
 
-        if (!data || data.length === 0) {
-            return res.status(404).json({
-                status: false,
-                creator: CREATOR,
-                error: "No results found.",
-            });
-        }
-
         res.status(200).json({
             status: true,
             creator: CREATOR,
-            results: data,
+            data,  // Menggunakan `data` sesuai Swagger
         });
     } catch (error) {
         console.error("YouPorn Search Error:", error);
@@ -62,18 +52,18 @@ async function ypsearch(query) {
                 const title = el.querySelector(".video-title")?.innerText.trim() || "No title";
                 const videoPath = el.querySelector("a")?.getAttribute("href");
                 const url = videoPath ? `https://www.youporn.com${videoPath}` : null;
-                const thumbnail = el.querySelector("img")?.getAttribute("data-src") || "No thumbnail";
+                const thumbnail = el.querySelector("img")?.getAttribute("data-src") || el.querySelector("img")?.getAttribute("src") || "No thumbnail";
                 const duration = el.querySelector(".video-duration")?.innerText.trim() || "Unknown";
 
                 if (url) {
-                    videos.push({ title, url, thumbnail, duration });
+                    videos.push({ title, duration, thumbnail, url });
                 }
             });
             return videos;
         });
 
         await browser.close();
-        return results.length > 0 ? results : [];
+        return results;
     } catch (error) {
         await browser.close();
         console.error("YouPorn Scraper Error:", error);
