@@ -922,7 +922,7 @@
       }
     }, 
   "/api/search/pornsearch": {
-    "post": {
+    "get": {
       "tags": ["Search"],
       "summary": "Mencari video di YouPorn",
       "description": "Mengambil daftar video berdasarkan kata kunci pencarian dari YouPorn.",
