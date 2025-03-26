@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 async function generateBook(prompt) {
     const payload = {
         color: "#000000",
-        font: "arch",
+        font: "Small Memory",
         size: 25, 
         text: prompt, 
     };
