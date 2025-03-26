@@ -377,7 +377,81 @@
     }
   }
 },
-
+"/api/tools/tulisbuku": {
+  "get": {
+    "tags": ["Tools"],
+    "summary": "Membuat gambar buku tulis dengan teks yang diberikan",
+    "parameters": [
+      {
+        "name": "prompt",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Teks yang akan ditulis di gambar buku"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Berhasil membuat gambar buku tulis",
+        "content": {
+          "image/jpeg": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Parameter 'prompt' tidak diberikan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "405": {
+        "description": "Metode tidak diizinkan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Kesalahan internal server",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}, 
 "/api/tools/removebg": {
   "get": {
     "tags": ["Tools"],
