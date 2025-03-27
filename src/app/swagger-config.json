@@ -1140,6 +1140,110 @@
     }
   }      
 },
+  "/api/search/filmsearch": {
+    "get": {
+      "tags": ["Search"],
+      "parameters": [
+        {
+          "name": "query",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "Judul film yang ingin dicari"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success - Data film ditemukan",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean", "example": true },
+                  "creator": { "type": "string", "example": "API Creator" },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": { "type": "string", "example": "Inception" },
+                        "link": { "type": "string", "format": "uri", "example": "https://example.com/inception" },
+                        "image": { "type": "string", "format": "uri", "example": "https://example.com/inception.jpg" },
+                        "rating": { "type": "string", "example": "8.8/10" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request - Parameter 'query' tidak boleh kosong",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean", "example": false },
+                  "creator": { "type": "string", "example": "API Creator" },
+                  "error": { "type": "string", "example": "Query parameter is required" }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized - API Key salah atau tidak disertakan",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean", "example": false },
+                  "creator": { "type": "string", "example": "API Creator" },
+                  "error": { "type": "string", "example": "Unauthorized - Invalid API Key" }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Not Found - Film tidak ditemukan",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean", "example": false },
+                  "creator": { "type": "string", "example": "API Creator" },
+                  "error": { "type": "string", "example": "No results found" }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error - Terjadi kesalahan pada server",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean", "example": false },
+                  "creator": { "type": "string", "example": "API Creator" },
+                  "error": { "type": "string", "example": "Internal Server Error" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
 "/api/search/filmdetail": {
   "get": {
     "tags": ["Search"], 
