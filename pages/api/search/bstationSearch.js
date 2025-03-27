@@ -48,14 +48,20 @@ export default async function handler(req, res) {
 
 async function BSearch(query) {
     try {
-        const { data: html } = await axios.get(`https://www.bilibili.tv/id/search-result?q=${encodeURIComponent(query)}`);
-        const $ = cheerio.load(html);
+        const url = `https://www.bilibili.tv/id/search-result?q=${encodeURIComponent(query)}`;
+        const { data: html } = await axios.get(url, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+            }
+        });
 
+        const $ = cheerio.load(html);
         const results = [];
+
         $("li.section__list__item").each((index, element) => {
-            const title = $(element).find(".highlights__text--active").text().trim() || "No title available";
+            const title = $(element).find(".bstar-video-card__title").text().trim() || "No title available";
             const videoLink = $(element).find(".bstar-video-card__cover-link").attr("href") || "";
-            const thumbnail = $(element).find(".bstar-video-card__cover-img source").attr("srcset")?.split(" ")[0] || "";
+            const thumbnail = $(element).find(".bstar-video-card__cover-img img").attr("src") || "";
             const views = $(element).find(".bstar-video-card__desc--normal").text().trim() || "No views";
             const creatorName = $(element).find(".bstar-video-card__nickname").text().trim() || "Unknown creator";
             const creatorLink = $(element).find(".bstar-video-card__nickname").attr("href") || "";
@@ -74,7 +80,7 @@ async function BSearch(query) {
             }
         });
 
-        return results;
+        return results.length > 0 ? results : [{ message: "No results found" }];
     } catch (error) {
         console.error("Error while fetching search results:", error);
         return [];
