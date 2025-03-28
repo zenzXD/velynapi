@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import {  CREATOR } from "../../../settings";
 
 const base = {
   latest: "https://nontonanime.live/",
