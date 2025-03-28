@@ -2,39 +2,39 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 
 export default async function handler(req, res) {
-    if (req.method !== "GET") {
-        return res.status(405).json({
-            status: false,
-            creator: CREATOR,
-            error: "Method Not Allowed",
-        });
-    }
+  if (req.method !== "GET") {
+    return res.status(405).json({
+      status: false,
+      creator: CREATOR,
+      error: "Method Not Allowed",
+    });
+  }
 
-    const { query } = req.query;
+  const { query: searchQuery } = req.query;
 
-    if (!query) {
-        return res.status(400).json({
-            status: false,
-            creator: CREATOR,
-            error: "Query parameter is required",
-        });
-    }
+  if (!searchQuery) {
+    return res.status(400).json({
+      status: false,
+      creator: CREATOR,
+      error: "Query parameter is required",
+    });
+  }
 
-    try {
-        const data = await nontonAnime.search(query);
-        res.status(200).json({
-            status: true,
-            creator: CREATOR,
-            data: data.length ? data : "No results found",
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            status: false,
-            creator: CREATOR,
-            error: "Internal Server Error",
-        });
-    }
+  try {
+    const data = await nontonAnime.search(searchQuery);
+    res.status(200).json({
+      status: true,
+      creator: CREATOR,
+      data: data.length ? data : "No results found",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: false,
+      creator: CREATOR,
+      error: "Internal Server Error",
+    });
+  }
 }
 
 const base = {
@@ -56,7 +56,9 @@ const nontonAnime = {
           url: $(element).attr("href"),
           episode: $(element).find(".bt .epx").text().trim(),
           type: $(element).find(".limit .typez").text().trim(),
-          thumbnail: $(element).find(".lazyload").attr("data-src") || $(element).find("img").attr("src"),
+          thumbnail:
+            $(element).find(".lazyload").attr("data-src") ||
+            $(element).find("img").attr("src"),
         });
       });
 
@@ -82,7 +84,9 @@ const nontonAnime = {
             url: $(element).attr("href"),
             episode,
             type: $(element).find(".limit .typez").text().trim(),
-            thumbnail: $(element).find(".lazyload").attr("data-src") || $(element).find("img").attr("src"),
+            thumbnail:
+              $(element).find(".lazyload").attr("data-src") ||
+              $(element).find("img").attr("src"),
           });
         }
       });
@@ -106,7 +110,9 @@ const nontonAnime = {
           url: $(element).attr("href"),
           episode: $(element).find(".bt .epx").text().trim(),
           type: $(element).find(".limit .typez").text().trim(),
-          thumbnail: $(element).find(".lazyload").attr("data-src") || $(element).find("img").attr("src"),
+          thumbnail:
+            $(element).find(".lazyload").attr("data-src") ||
+            $(element).find("img").attr("src"),
         });
       });
 
@@ -123,42 +129,58 @@ const nontonAnime = {
       const $ = cheerio.load(data);
 
       const title = $("h1.entry-title").text().trim();
-      const thumbnail = $(".bigcover .lazyload").attr("data-src") || $(".bigcover img").attr("src");
+      const thumbnail =
+        $(".bigcover .lazyload").attr("data-src") ||
+        $(".bigcover img").attr("src");
       const synopsis = $(".entry-content p").text().trim();
-      const status = $(".info-content .spe span:contains('Status')").text().replace("Status:", "").trim();
-      const studio = $(".info-content .spe span:contains('Studio') a").text().trim();
-      const season = $(".info-content .spe span:contains('Season') a").text().trim();
-      const type = $(".info-content .spe span:contains('Type')").text().replace("Type:", "").trim();
-      
+      const status = $(".info-content .spe span:contains('Status')")
+        .text()
+        .replace("Status:", "")
+        .trim();
+      const studio = $(".info-content .spe span:contains('Studio') a")
+        .text()
+        .trim();
+      const season = $(".info-content .spe span:contains('Season') a")
+        .text()
+        .trim();
+      const type = $(".info-content .spe span:contains('Type')")
+        .text()
+        .replace("Type:", "")
+        .trim();
+
       const genres = $(".genxed a")
         .map((_, el) => $(el).text().trim())
         .get();
-      
-      const characters = $(".cvlist .cvitem").map((_, el) => {
-        const charName = $(el).find(".cvchar .charname").text().trim();
-        const voiceActor = $(el).find(".cvactor .charname a").text().trim();
-        return { charName, voiceActor };
-      }).get();
-      
-      const episodes = $(".eplister ul li").map((_, el) => {
-        const episodeKe = $(el).find(".epl-num").text().trim();
-        const title = $(el).find(".epl-title").text().trim();
-        const dateOfRelease = $(el).find(".epl-date").text().trim();
-        const link = $(el).find("a").attr("href");
-        return { episodeKe, title, dateOfRelease, link };
-      }).get();
 
-      return { 
-        title, 
-        thumbnail, 
-        synopsis, 
-        status, 
-        studio, 
-        season, 
-        type, 
-        genres, 
-        characters, 
-        episodes 
+      const characters = $(".cvlist .cvitem")
+        .map((_, el) => {
+          const charName = $(el).find(".cvchar .charname").text().trim();
+          const voiceActor = $(el).find(".cvactor .charname a").text().trim();
+          return { charName, voiceActor };
+        })
+        .get();
+
+      const episodes = $(".eplister ul li")
+        .map((_, el) => {
+          const episodeKe = $(el).find(".epl-num").text().trim();
+          const title = $(el).find(".epl-title").text().trim();
+          const dateOfRelease = $(el).find(".epl-date").text().trim();
+          const link = $(el).find("a").attr("href");
+          return { episodeKe, title, dateOfRelease, link };
+        })
+        .get();
+
+      return {
+        title,
+        thumbnail,
+        synopsis,
+        status,
+        studio,
+        season,
+        type,
+        genres,
+        characters,
+        episodes,
       };
     } catch (error) {
       console.error("Error fetching anime details:", error);
@@ -180,9 +202,9 @@ const nontonAnime = {
 
           downloadLinks.push({
             server: $(element).text().trim(),
-            link: decodedLink.includes("<iframe") 
-              ? cheerio.load(decodedLink)("iframe").attr("src") 
-              : decodedLink
+            link: decodedLink.includes("<iframe")
+              ? cheerio.load(decodedLink)("iframe").attr("src")
+              : decodedLink,
           });
         }
       });
@@ -192,5 +214,5 @@ const nontonAnime = {
       console.error("Error fetching download links:", error);
       return [];
     }
-  }
+  },
 };
