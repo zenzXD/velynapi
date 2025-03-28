@@ -42,7 +42,7 @@ async function DoppleAi(prompt) {
         folder: "",
         images: false,
         username: "mn0uvp2fhv",
-        persona_name: "",
+        persona_name: "DoppleAI",
         id: "46db0561-cb3e-43d9-8f50-40b3e3c84713",
         userQuery: prompt,
     });
