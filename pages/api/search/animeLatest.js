@@ -63,7 +63,12 @@ const nontonAnime = {
           $(element).find(".lazyload").attr("data-src") ||
           $(element).find("img").attr("src") ||
           "No Image";
-        const releaseDate = $(element).find(".bt .date").text().trim() || "Unknown";
+        
+        // 🔥 Perbaikan untuk `releaseDate`
+        let releaseDate = $(element).find(".bt .date").text().trim();
+        if (!releaseDate || releaseDate === "") {
+          releaseDate = "Tanggal Tidak Diketahui"; // Gunakan fallback yang lebih jelas
+        }
 
         animeList.push({
           title,
