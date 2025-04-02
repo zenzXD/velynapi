@@ -1322,6 +1322,94 @@
     }
   }
 }, 
+"/api/search/komiku": {
+  "get": {
+    "tags": ["Search"],
+    "parameters": [
+      {
+        "name": "title",
+        "in": "query",
+        "schema": { "type": "string" },
+        "required": true,
+        "description": "Masukan Judul manga yang ingin dicari"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "link": { "type": "string", "format": "uri" },
+                      "thumb": { "type": "string", "format": "uri" },
+                      "type": { "type": "string" },
+                      "genre": { "type": "string" },
+                      "description": { "type": "string" },
+                      "firstChp": {
+                        "type": "object",
+                        "properties": {
+                          "link": { "type": "string", "format": "uri" },
+                          "title": { "type": "string" }
+                        }
+                      },
+                      "lastChp": {
+                        "type": "object",
+                        "properties": {
+                          "link": { "type": "string", "format": "uri" },
+                          "title": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'title' tidak boleh kosong",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error - Terjadi kesalahan pada server",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}, 
 "/api/search/imdb": {
   "get": {
     "tags": ["Search"],
