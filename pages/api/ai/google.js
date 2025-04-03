@@ -10,8 +10,8 @@ export default async function handler(req, res) {
         });
     }
 
-    const { query } = req.query;
-    if (!query) {
+    const { prompt } = req.query;
+    if (!prompt) {
         return res.status(400).json({
             status: false,
             creator: CREATOR,
@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     }
     
     try {
-        const chatResponse = await chatGptD(query);
+        const chatResponse = await chatGptD(prompt);
         res.status(200).json({
             status: true,
             creator: CREATOR,
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     }
 }
 
-async function chatGptD(query) {
+async function chatGptD(prompt) {
     try {
         const response = await axios.post("https://chat.chatgptdemo.net/chat_api_stream", {
             question: query,
