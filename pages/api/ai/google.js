@@ -21,6 +21,14 @@ export default async function handler(req, res) {
     
     try {
         const chatResponse = await chatGptD(prompt);
+        if (!chatResponse.response) {
+            return res.status(500).json({
+                status: false,
+                creator: CREATOR,
+                error: "Failed to fetch valid response",
+            });
+        }
+
         res.status(200).json({
             status: true,
             creator: CREATOR,
@@ -39,7 +47,7 @@ export default async function handler(req, res) {
 async function chatGptD(prompt) {
     try {
         const response = await axios.post("https://chat.chatgptdemo.net/chat_api_stream", {
-            question: query,
+            question: prompt,
             chat_id: "679c11d40c3719b6c7916bfd",
             timestamp: Date.now()
         }, {
@@ -59,21 +67,26 @@ async function chatGptD(prompt) {
         let res = "";
         await new Promise((resolve, reject) => {
             response.data.on("data", chunk => {
-                const lines = chunk.toString().split("\n");
-                lines.forEach(line => {
-                    const match = line.match(/"content":\s*"([^"]*)"/);
-                    if (match) {
-                        res += match[1];
-                    }
-                });
+                try {
+                    const lines = chunk.toString().split("\n");
+                    lines.forEach(line => {
+                        const match = line.match(/"content":\s*"([^"]*)"/);
+                        if (match) {
+                            res += match[1] + " ";
+                        }
+                    });
+                } catch (parseError) {
+                    console.error("Error parsing chunk:", parseError);
+                }
             });
             response.data.on("end", resolve);
             response.data.on("error", reject);
         });
 
-        return { response: res.trim() };
+        res = res.trim();
+        return { response: res.length > 0 ? res : null };
     } catch (error) {
         console.error("Error fetching chat response:", error);
-        return { response: "Error fetching response" };
+        return { response: null };
     }
 }
