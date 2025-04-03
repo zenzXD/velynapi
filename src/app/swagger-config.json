@@ -1410,6 +1410,79 @@
     }
   }
 }, 
+  "/api/search/komikuChapter": {
+    "get": {
+      "tags": ["Search"],
+      "parameters": [
+        {
+          "name": "link",
+          "in": "query",
+          "schema": { "type": "string" },
+          "required": true,
+          "description": "URL halaman komik untuk mencari chapter"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success - Data chapter komik ditemukan",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": { "type": "string" },
+                        "uploaded": { "type": "string", "format": "date-time" },
+                        "url": { "type": "string", "format": "uri" },
+                        "img": { "type": "string", "format": "uri" },
+                        "description": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request - Parameter 'link' tidak boleh kosong",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal Server Error - Terjadi kesalahan pada server",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "boolean" },
+                  "creator": { "type": "string" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }, 
 "/api/search/imdb": {
   "get": {
     "tags": ["Search"],
