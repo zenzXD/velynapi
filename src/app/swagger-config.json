@@ -391,6 +391,83 @@
     }
   }
 },
+"/api/tools/upscale": {
+  "get": {
+    "tags": ["Tools"],
+    "summary": "Meningkatkan resolusi gambar menggunakan AI Upscaler",
+    "description": "Menggunakan AI untuk meningkatkan kualitas gambar dalam resolusi HD.",
+    "parameters": [
+      {
+        "name": "url",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "required": true,
+        "description": "URL gambar yang akan ditingkatkan resolusinya (format: jpg, jpeg, png, webp, gif)"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Gambar berhasil ditingkatkan ke resolusi HD",
+        "content": {
+          "image/png": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'url' tidak valid atau kosong",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized - API Key diperlukan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error - Terjadi kesalahan pada server",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}, 
 "/api/tools/tulisbuku": {
   "get": {
     "tags": ["Tools"],
