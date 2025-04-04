@@ -2649,7 +2649,7 @@
     "tags": ["Chat AI"],
     "parameters": [
       {
-        "name": "text",
+        "name": "prompt",
         "in": "query",
         "required": true,
         "schema": {
