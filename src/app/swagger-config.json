@@ -350,7 +350,6 @@
   "/api/tools/remini": {
     "get": {
       "tags": ["Tools"],
-      "summary": "Meningkatkan kualitas gambar menggunakan AI Remini",
       "parameters": [
         {
           "name": "url",
@@ -394,8 +393,6 @@
 "/api/tools/upscale": {
   "get": {
     "tags": ["Tools"],
-    "summary": "Meningkatkan resolusi gambar menggunakan AI Upscaler",
-    "description": "Menggunakan AI untuk meningkatkan kualitas gambar dalam resolusi HD.",
     "parameters": [
       {
         "name": "url",
@@ -471,7 +468,6 @@
 "/api/tools/tulisbuku": {
   "get": {
     "tags": ["Tools"],
-    "summary": "Membuat gambar buku tulis dengan teks yang diberikan",
     "parameters": [
       {
         "name": "prompt",
@@ -546,7 +542,6 @@
 "/api/tools/removebg": {
   "get": {
     "tags": ["Tools"],
-    "summary": "Menghapus latar belakang gambar menggunakan AI",
     "security": [
           {
             "ApiKeyAuth": []
@@ -604,11 +599,51 @@
         }
       }
   },
-  "/api/tools/quotes": {
+"/api/ai/tozombie": {
+  "get": {
+    "tags": ["Tools", "AI Generator"], 
+    "parameters": [
+      {
+        "name": "url",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "required": true,
+        "description": "URL gambar yang akan diubah menjadi zombie"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Berhasil menghasilkan gambar zombie",
+        "content": {
+          "image/png": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'url' tidak boleh kosong"
+      },
+      "401": {
+        "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+      },
+      "403": {
+        "description": "Forbidden - API Key tidak memiliki akses"
+      },
+      "500": {
+        "description": "Internal Server Error - Terjadi kesalahan saat memproses gambar"
+      }
+    }
+  }
+}, 
+"/api/tools/quotes": {
   "get": {
     "tags": ["Tools"],
-    "summary": "Get a random quote",
-    "description": "Fetches a random quote from quotes",
     "responses": {
       "200": {
         "description": "Success",
