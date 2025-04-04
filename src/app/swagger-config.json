@@ -175,36 +175,50 @@
     }
   }
 }, 
-    "/api/tools/Carbonfyv1": {
-      "get": {
-        "tags": ["Tools"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "text": {
-                    "type": "string",
-                    "default": "hallo wirr"
-                  }
-                },
-                "required": ["text"]
+"/api/tools/Carbonfyv1": {
+  "post": {
+    "tags": ["Tools"],
+    "summary": "Generate code image with Carbon",
+    "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
               }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized"
+            },
+            "required": ["text"]
           }
         }
       }
     },
+    "responses": {
+      "200": {
+        "description": "Successful image generation",
+        "content": {
+          "image/png": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Invalid input"
+      },
+      "405": {
+        "description": "Method Not Allowed"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+}, 
     "/api/tools/subfinder": {
       "get": {
         "tags": ["Tools"],
