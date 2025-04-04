@@ -21,15 +21,22 @@ export default async function handler(req, res) {
     }
 
     try {
-        const imageUrl = `https://tiodevhost.eu.org/?q=${encodeURIComponent(text)}`;
+        const imageUrl = `https://api.siputzx.my.id/api/m/brat?text=${encodeURIComponent(text)}`;
         const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+
+        if (!response.data || response.status !== 200) {
+            return res.status(500).json({
+                status: false,
+                creator: CREATOR,
+                error: "Gagal mengambil gambar dari API eksternal",
+            });
+        }
 
         const imageBuffer = Buffer.from(response.data);
 
         res.setHeader("Content-Type", "image/png");
         res.setHeader("Content-Length", imageBuffer.length);
         res.status(200).send(imageBuffer);
-        res.end();
 
     } catch (error) {
         console.error("Error fetching image:", error.message);
