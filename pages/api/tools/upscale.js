@@ -1,7 +1,7 @@
 import { CREATOR } from "../../../settings";
 import FormData from "form-data";
 import axios from "axios";
-import fetch from "node-fetch"; // pastikan fetch tersedia
+import fetch from "node-fetch";
 
 export default async function handler(req, res) {
     if (req.method !== "GET") {
@@ -12,47 +12,47 @@ export default async function handler(req, res) {
         });
     }
 
-    const { url, method = "enhance" } = req.query;
+    const { url } = req.query;
 
-    if (!url) {
+    if (!url || !isValidImageUrl(url)) {
         return res.status(400).json({
             status: false,
             creator: CREATOR,
-            error: "Bad Request: Missing 'url' parameter",
+            error: "Bad Request: Invalid or missing 'url' parameter (must be image link)",
         });
     }
 
     try {
         const imageBuffer = await fetchImage(url);
-        if (!imageBuffer) throw new Error("Failed to fetch image");
-
-        const hdImageBuffer = await processing(imageBuffer, method);
-        if (!hdImageBuffer) throw new Error("Failed to process image");
+        const hdImageBuffer = await upscaleImage(imageBuffer);
 
         res.setHeader("Content-Type", "image/png");
         res.setHeader("Content-Length", hdImageBuffer.length);
-        res.status(200).send(hdImageBuffer);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
+        return res.status(200).send(hdImageBuffer);
+    } catch (err) {
+        console.error("Upscale Error:", err.message);
+        return res.status(500).json({
             status: false,
             creator: CREATOR,
-            error: error.message || "Internal Server Error",
+            error: err.message || "Internal Server Error",
         });
     }
 }
 
+// Cek validasi URL gambar
+function isValidImageUrl(url) {
+    return /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(url);
+}
+
+// Fetch image dari URL
 async function fetchImage(url) {
     const response = await fetch(url);
-    if (!response.ok) throw new Error("Image fetch failed");
+    if (!response.ok) throw new Error("Failed to fetch image from URL");
     return await response.buffer();
 }
 
-async function processing(imageBuffer, method) {
-    if (method !== "enhance") {
-        throw new Error(`Unsupported method: ${method}`);
-    }
-
+// Proses upscale ke resolusi tinggi
+async function upscaleImage(imageBuffer) {
     const form = new FormData();
     form.append("desiredHeight", "3172");
     form.append("desiredWidth", "4096");
@@ -61,7 +61,7 @@ async function processing(imageBuffer, method) {
     form.append("colorMode", "RGB");
     form.append("compressionLevel", "High");
     form.append("image_file", imageBuffer, {
-        filename: "input.jpg",
+        filename: "upload.jpg",
         contentType: "image/jpeg",
     });
 
@@ -76,11 +76,10 @@ async function processing(imageBuffer, method) {
     });
 
     if (!response.data?.output_url) {
-        throw new Error("Upscaling failed: No output URL received");
+        throw new Error("Upscaling failed, no output received");
     }
 
-    const outputImage = await fetch(response.data.output_url);
-    if (!outputImage.ok) throw new Error("Failed to fetch output image");
-
-    return await outputImage.buffer();
+    const output = await fetch(response.data.output_url);
+    if (!output.ok) throw new Error("Failed to fetch HD image result");
+    return await output.buffer();
 }
