@@ -1,6 +1,8 @@
 import axios from "axios";
 import FormData from "form-data";
 import { API_KEY, CREATOR } from "../../../settings";
+const MAX_TRIES = 20; 
+const TIMEOUT_MS = 3000;
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -11,13 +13,21 @@ export default async function handler(req, res) {
     });
   }
 
-  const { url } = req.query;
+  const { url, apikey } = req.query;
 
   if (!url) {
     return res.status(400).json({
       status: false,
       creator: CREATOR,
-      error: "Bad Request: Missing 'url' parameter",
+      error: "Bad Request: Parameter 'url' tidak boleh kosong",
+    });
+  }
+
+  if (!apikey || apikey !== "Velyn") { 
+    return res.status(401).json({
+      status: false,
+      creator: CREATOR,
+      error: "Unauthorized: API Key tidak valid",
     });
   }
 
@@ -35,58 +45,48 @@ export default async function handler(req, res) {
     res.setHeader("Content-Type", "image/png");
     res.setHeader("Content-Length", imageBuffer.length);
     res.status(200).send(imageBuffer);
+
   } catch (error) {
-    console.error("Zombie API Error:", error.message || error);
+    console.error("Error generating image:", error.message);
     res.status(500).json({
       status: false,
       creator: CREATOR,
-      error: "Internal Server Error",
+      error: error.message || "Internal Server Error",
     });
   }
 }
 
 async function toZombie(imageUrl) {
-  const { data: imageData } = await axios.get(imageUrl, {
-    responseType: "arraybuffer",
-  });
+  let { data } = await axios.get(imageUrl, { responseType: "arraybuffer", timeout: TIMEOUT_MS });
 
-  const formData = new FormData();
-  formData.append("photofile", imageData, { filename: "image.jpg" });
+  let formData = new FormData();
+  formData.append("photofile", data, { filename: "input.jpg" });
   formData.append("action", "upload");
 
-  const uploadResponse = await axios.post(
-    "https://makemezombie.com/response.php",
-    formData,
-    { headers: formData.getHeaders() }
-  );
+  let { data: uploadResponse } = await axios.post("https://makemezombie.com/response.php", formData, {
+    headers: { ...formData.getHeaders() },
+    timeout: TIMEOUT_MS,
+  });
 
-  const key = uploadResponse.data?.key;
-  if (!key) throw new Error("Failed to get key from makemezombie");
+  let key = uploadResponse.key;
+  console.log(`Key dari Image: ${key}`);
 
-  let resultUrl;
-  for (let i = 0; i < 20; i++) {
-    const checkData = new FormData();
+  let tries = 0;
+  while (tries < MAX_TRIES) {
+    let checkData = new FormData();
     checkData.append("action", "check");
     checkData.append("image_id", key);
 
-    const checkResponse = await axios.post(
-      "https://makemezombie.com/response.php",
-      checkData
-    );
+    let { data: response } = await axios.post("https://makemezombie.com/response.php", checkData, { timeout: TIMEOUT_MS });
 
-    if (checkResponse.data?.ready === "1") {
-      resultUrl = `https://makemezombie.com/${checkResponse.data.image}`;
-      break;
+    if (response.ready == "1") {
+      return axios.get(response.image_url, { responseType: "arraybuffer", timeout: TIMEOUT_MS })
+        .then((imgRes) => Buffer.from(imgRes.data));
     }
 
-    await new Promise((r) => setTimeout(r, 1000));
+    tries++;
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Tunggu 1 detik sebelum mencoba lagi
   }
 
-  if (!resultUrl) throw new Error("Zombie image not ready after timeout");
-
-  const finalImage = await axios.get(resultUrl, {
-    responseType: "arraybuffer",
-  });
-
-  return Buffer.from(finalImage.data);
+  throw new Error("Processing time exceeded limit.");
 }
