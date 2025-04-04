@@ -693,7 +693,72 @@
     }
   }
 },
-    "/api/maker/ttp": {
+"/api/maker/sertifikatTolol": {
+  "get": {
+    "tags": ["Maker"],
+    "security": [
+      {
+        "ApiKeyAuth": []
+      }
+    ],
+    "parameters": [
+      {
+        "name": "text",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Teks yang akan dimasukkan ke dalam sertifikatTolol."
+      },
+      {
+        "name": "apikey",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "API key yang diperlukan untuk akses."
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Berhasil menghasilkan gambar sertifikat",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "text": { "type": "string" },
+                    "image": { "type": "string", "format": "uri" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request - Parameter 'text' wajib diisi"
+      },
+      "401": {
+        "description": "Unauthorized - API Key tidak valid atau tidak diberikan"
+      },
+      "403": {
+        "description": "Forbidden - API Key tidak memiliki akses"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+}, 
+"/api/maker/ttp": {
   "get": {
     "tags": ["Maker"],
     "summary": "Membuat teks menjadi gambar dengan efek transparan",
