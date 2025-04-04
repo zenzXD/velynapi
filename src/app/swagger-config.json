@@ -2644,6 +2644,55 @@
     }
   }
 }, 
+"/api/ai/gpt4o": {
+  "get": {
+    "tags": ["Chat AI"],
+    "parameters": [
+      {
+        "name": "text",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "The prompt or message to send to the GPT-4o AI model"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Successful AI response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "boolean"
+                },
+                "creator": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "description": "The full response object from GPT-4o"
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Invalid input - 'text' query parameter is required"
+      },
+      "405": {
+        "description": "Method Not Allowed - only GET is supported"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+}, 
   "/api/ai/saanviAI": {
     "get": {
       "tags": ["Chat AI"],
