@@ -63,8 +63,8 @@ async function fetchImage(url) {
 // Proses upscale ke resolusi HD
 async function upscaleImage(imageBuffer) {
     const form = new FormData();
-    form.append("desiredHeight", "3172");
-    form.append("desiredWidth", "4096");
+    form.append("desiredHeight", "1024");
+    form.append("desiredWidth", "1024");
     form.append("anime", "false");
     form.append("outputFormat", "png");
     form.append("colorMode", "RGB");
