@@ -626,6 +626,8 @@
 "/api/maker/beautiful": {
   "get": {
     "tags": ["Maker"],
+    "summary": "Mengambil gambar dari URL yang diberikan",
+    "description": "API ini mengambil gambar dari URL yang diberikan dan mengembalikan hasilnya dalam format PNG.",
     "parameters": [
       {
         "name": "url",
@@ -657,9 +659,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "status": { "type": "boolean", "example": false },
-                "creator": { "type": "string", "example": "NamaCreator" },
-                "error": { "type": "string", "example": "Parameter 'url' wajib diisi" }
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
               }
             }
           }
@@ -672,9 +674,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "status": { "type": "boolean", "example": false },
-                "creator": { "type": "string", "example": "NamaCreator" },
-                "error": { "type": "string", "example": "Method Not Allowed" }
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
               }
             }
           }
@@ -687,9 +689,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "status": { "type": "boolean", "example": false },
-                "creator": { "type": "string", "example": "NamaCreator" },
-                "error": { "type": "string", "example": "Gagal mengambil gambar dari API eksternal" }
+                "status": { "type": "boolean" },
+                "creator": { "type": "string" },
+                "error": { "type": "string" }
               }
             }
           }
