@@ -176,7 +176,7 @@
   }
 }, 
     "/api/tools/Carbonfyv1": {
-      "post": {
+      "get": {
         "tags": ["Tools"],
         "requestBody": {
           "required": true,
@@ -623,7 +623,82 @@
     }
   }
 }, 
-  "/api/maker/brat": {
+"/api/maker/beautiful": {
+  "get": {
+    "tags": ["Maker"],
+    "parameters": [
+      {
+        "name": "url",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "description": "URL dari gambar yang ingin diambil."
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Berhasil mendapatkan gambar",
+        "content": {
+          "image/png": {
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Parameter 'url' tidak diberikan atau tidak valid",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "example": false },
+                "creator": { "type": "string", "example": "NamaCreator" },
+                "error": { "type": "string", "example": "Parameter 'url' wajib diisi" }
+              }
+            }
+          }
+        }
+      },
+      "405": {
+        "description": "Metode tidak diizinkan",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "example": false },
+                "creator": { "type": "string", "example": "NamaCreator" },
+                "error": { "type": "string", "example": "Method Not Allowed" }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Kesalahan internal server",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "example": false },
+                "creator": { "type": "string", "example": "NamaCreator" },
+                "error": { "type": "string", "example": "Gagal mengambil gambar dari API eksternal" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}, 
+"/api/maker/brat": {
   "get": {
     "tags": ["Maker"],
     "security": [
