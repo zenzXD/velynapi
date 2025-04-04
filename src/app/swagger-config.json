@@ -601,22 +601,35 @@
   },
 "/api/ai/tozombie": {
   "get": {
-    "tags": ["Tools", "AI Generator"], 
+    "tags": ["Tools", "AI Generator"],
+    "security": [
+      {
+        "ApiKeyAuth": []
+      }
+    ],
     "parameters": [
       {
         "name": "url",
         "in": "query",
         "schema": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "required": true,
-        "description": "URL gambar yang akan diubah menjadi zombie"
+        "description": "URL gambar yang akan dikonversi menjadi zombie"
+      },
+      {
+        "name": "apikey",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "API key untuk otorisasi"
       }
     ],
     "responses": {
       "200": {
-        "description": "Berhasil menghasilkan gambar zombie",
+        "description": "Success",
         "content": {
           "image/png": {
             "schema": {
@@ -636,7 +649,7 @@
         "description": "Forbidden - API Key tidak memiliki akses"
       },
       "500": {
-        "description": "Internal Server Error - Terjadi kesalahan saat memproses gambar"
+        "description": "Internal Server Error"
       }
     }
   }
