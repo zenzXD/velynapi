@@ -87,12 +87,13 @@ async function upscaleImage(imageBuffer) {
 
         console.log("API Response:", response.data);
 
-        if (!response.data?.output_url) {
+        const hdUrl = response.data?.processed_image_url;
+        if (!hdUrl) {
             throw new Error("Upscaling failed, no output URL received");
         }
 
-        console.log("Fetching HD image from:", response.data.output_url);
-        const output = await fetch(response.data.output_url);
+        console.log("Fetching HD image from:", hdUrl);
+        const output = await fetch(hdUrl);
         if (!output.ok) throw new Error("Failed to fetch HD image result");
         return await output.buffer();
     } catch (err) {
