@@ -127,7 +127,7 @@ export default function Home() {
             "@context": "http://schema.org",
             "@type": "Website",
             "name": "ZenzzApi",
-            "url": "https://apivelyn.vercel.app",
+            "url": "https://zenzz-api.vercel.app",
             "description": "ZenzzApi is a free, simple REST API for everyone.",
           }),
         }}
