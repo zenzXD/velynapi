@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "VelynApi",
-    "description": "Welcome everyone, welcome to VelynAPI document home page. You can retrieve API data only in VelynAPI and certainly without incurring any costs in data retrieval, and the results obtained are very simple and very clear to understand.",
+    "title": "ZenzzApi",
+    "description": "Welcome everyone, welcome to ZenzzApi document home page. You can retrieve API data only in ZenzzApi and certainly without incurring any costs in data retrieval, and the results obtained are very simple and very clear to understand.",
     "contact": {
-      "email": "https://wa.me/+62895342022385"
+      "email": "https://wa.me/+6287823745178"
     },
     "license": {
       "name": "NextTime Information",
-      "url": "https://whatsapp.com/channel/0029VaKoIaj9cDDgB6N9u232"
+      "url": "https://whatsapp.com/channel/0029VaxvdhJ6buMSjkRBNR2d"
     },
     "version": "1.0"
   },
