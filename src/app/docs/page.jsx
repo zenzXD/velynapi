@@ -113,9 +113,9 @@ export default function Home() {
       <Head>
         <title>VelynAPI Documentation</title>
         <meta name="title" content="VelynAPI - Documentation" />
-        <meta name="description" content="VelynAPI is a free, simple REST API for everyone. Enjoy using it without any cost!" />
-        <meta property="og:title" content="VelynAPI - Documentation" />
-        <meta property="og:description" content="VelynAPI is a free, simple REST API for everyone." />
+        <meta name="description" content="ZenzzApi is a free, simple REST API for everyone. Enjoy using it without any cost!" />
+        <meta property="og:title" content="ZenzzApi - Documentation" />
+        <meta property="og:description" content="ZenzzApi is a free, simple REST API for everyone." />
         <meta property="og:type" content="website" />
       </Head>
 
@@ -125,10 +125,10 @@ export default function Home() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "http://schema.org",
-            "@type": "WebSite",
-            "name": "VelynAPI",
+            "@type": "Website",
+            "name": "ZenzzApi",
             "url": "https://apivelyn.vercel.app",
-            "description": "VelynAPI is a free, simple REST API for everyone.",
+            "description": "ZenzzApi is a free, simple REST API for everyone.",
           }),
         }}
       />
