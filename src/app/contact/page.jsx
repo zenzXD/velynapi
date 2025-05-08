@@ -27,7 +27,7 @@ const ContactPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { name, email, phone, message } = formData;
-    const whatsappNumber = "62895342022385";
+    const whatsappNumber = "6287823745178";
     const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage: ${message}`
     )}`;
@@ -44,7 +44,7 @@ const ContactPage = () => {
           <input
             type="text"
             name="name"
-            placeholder="Masukan Nama Anda........."
+            placeholder="ZenzzXD"
             value={formData.name}
             onChange={handleChange}
             required
@@ -52,7 +52,7 @@ const ContactPage = () => {
           <input
             type="email"
             name="email"
-            placeholder="Masukan Email Address......"
+            placeholder="aaku85019@gmail.com"
             value={formData.email}
             onChange={handleChange}
             required
