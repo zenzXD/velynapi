@@ -20,7 +20,7 @@ const PricingPage = () => {
       <div className={styles.textContainer}>
         <h2 className={styles.subtitle}>Pilih Paket Harga Kami</h2>
         <p className={styles.desc}>
-          Dapatkan akses ke API Velyn dengan performa terbaik dan tanpa batasan. 
+          Dapatkan akses ke API Zennz dengan performa terbaik dan tanpa batasan. 
           Pilih paket yang sesuai dengan kebutuhan Anda dan nikmati layanan API berkualitas tinggi.
         </p>
       </div>
