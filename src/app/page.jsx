@@ -5,9 +5,9 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>
-        <h1 className={styles.title}>Velyn Rest API</h1>
+        <h1 className={styles.title}>Zenzz Rest API</h1>
         <p className={styles.desc}>
-          Welcome everyone, welcome to VelynAPI document home page. You can retrieve api data only in VelynAPI and certainly without incurring any costs in data retrieval, 
+          Welcome everyone, welcome to ZenzzApi document home page. You can retrieve api data only in VelynAPI and certainly without incurring any costs in data retrieval, 
           and the results obtained are very simple and very clear to understand
         </p>
         <div className={styles.buttons}>
