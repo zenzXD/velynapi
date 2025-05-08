@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const GITHUB_API = 'https://api.github.com/repos/NyxObscura/velyn/contents/velyn.json?ref=main';
 const TOKEN = "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";
-const OWNER_KEY = "Xavelyn";
+const OWNER_KEY = "zenn112";
 
 let apiKeys = [];
 
